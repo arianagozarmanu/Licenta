@@ -2,7 +2,13 @@ package medicalconcept;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
-
+/**
+ * Methods: 
+ * - POS for current and 2 neighbours before and after
+ * - Chunk
+ * @author Ariana
+ *
+ */
 public class SintacticFeatures {
 
 	public void showSintacticFeatures(Document doc) {
@@ -11,15 +17,17 @@ public class SintacticFeatures {
 			String token = Util.mkString(sentence.words(), " ");
 			String[] result = token.split("\\s");
 			String[] resPOS = getCurrentPOS(sentence).split("\\s");
-			//String[] resChunk = getChunk(sentence).split("\\s");		//decomenteaza dupa ce fac sa mearga
+			String[] resChunk = getChunk(sentence).split("\\s");		
 			for (int x=0; x<result.length; x++) {
 				System.out.print(result[x] + "\t\t"
 								+ resPOS[x] + "\t\t"
-								//+ resChunk[x] + "\t\t"
+								+ resChunk[x] + "\t\t"
 								+ getBeforePOS(x, sentence) + "\t\t"
 								+ getBefBefPOS(x, sentence) + "\t\t"
+								+ getBefBefBefPOS(x, sentence) + "\t\t"
 								+ getAfterPOS(x, sentence) + "\t\t"
-								+ getAftAftPOS(x, sentence) + "\t\t");
+								+ getAftAftPOS(x, sentence) + "\t\t"
+								+ getAftAftAftPOS(x, sentence) + "\t\t");
 				System.out.println();
 			}
 		}
@@ -53,6 +61,16 @@ public class SintacticFeatures {
 		}
 	}
 	
+	//if is first element, second or third, POS is none
+	public String getBefBefBefPOS(int x, Sentence sentence) {
+		String[] pos = Util.mkString(sentence.tags().get()," ").split("\\s");
+		if(x == 0 || x == 1 || x == 2) {
+			return "none";
+		} else {
+			return pos[x-3];
+		}
+	}
+	
 	//if is last element, POS is none
 	public String getAfterPOS(int x, Sentence sentence) {
 		String[] pos = Util.mkString(sentence.tags().get()," ").split("\\s");
@@ -70,6 +88,16 @@ public class SintacticFeatures {
 			return "none";
 		} else {
 			return pos[x+2];
+		}
+	}
+	
+	//if is last element, pre-last or prepre-last, POS is none
+	public String getAftAftAftPOS(int x, Sentence sentence) {
+		String[] pos = Util.mkString(sentence.tags().get()," ").split("\\s");
+		if(x == pos.length-1 || x == pos.length-2 || x == pos.length-3) {
+			return "none";
+		} else {
+			return pos[x+3];
 		}
 	}
 	

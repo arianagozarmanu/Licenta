@@ -1,8 +1,16 @@
 package medicalconcept;
 
-import org.clulab.struct.*;
 import org.clulab.processors.*;
 
+/**
+ * Methods:
+ * UpperCase At Beginning, All, Mixed Case
+ * Word length
+ * Contains & , . > < - ( ' % / digits
+ * 2 Neighbors before and after contains special character 
+ * @author Ariana
+ *
+ */
 public class WordLevelFeatures {
 	
 	static final String specialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
@@ -37,8 +45,10 @@ public class WordLevelFeatures {
 				containsDigits(result[x]);
 				containsSpecialCharBefore(x, sentence);
 				containsSpecialCharBefBef(x, sentence);
+				containsSpecialCharBefBefBef(x, sentence);
 				containsSpecialCharAfter(x, sentence);
 				containsSpecialCharAftAft(x, sentence);
+				containsSpecialCharAftAftAft(x, sentence);
 				System.out.println();
 			}
 		}	
@@ -156,6 +166,26 @@ public class WordLevelFeatures {
 		}
 	}
 	
+	public void containsSpecialCharBefBefBef(int x, Sentence sentence) {
+		Boolean notSC = true;
+		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		if( x == 0 || x == 1 || x == 2) {
+			System.out.print("false" + "\t");
+		} else {
+			String splitToken[] = token[x-3].split("");
+			for (int i = 0; i < splitToken.length && notSC; i++) {
+				if (specialCharacters.contains(splitToken[i])) {
+					System.out.print("true" + "\t");
+					notSC = false;
+				}
+			}
+			
+			if( notSC ) {
+				System.out.print("false" + "\t");
+			}
+		}
+	}
+	
 	public void containsSpecialCharAfter(int x, Sentence sentence) {
 		Boolean notSC = true;
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
@@ -195,6 +225,30 @@ public class WordLevelFeatures {
 			}
 		}
 	}
+	
+	public void containsSpecialCharAftAftAft(int x, Sentence sentence) {
+		Boolean notSC = true;
+		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		if( x == token.length-1 || x == token.length-2 || x == token.length-3) {
+			System.out.print("false" + "\t");
+		} else {
+			String splitToken[] = token[x+3].split("");
+			for (int i = 0; i < splitToken.length && notSC; i++) {
+				if (specialCharacters.contains(splitToken[i])) {
+					System.out.print("true" + "\t");
+					notSC = false;
+				}
+			}
+			
+			if( notSC ) {
+				System.out.print("false" + "\t");
+			}
+		}
+	}
+	
+	
+	
+	
 	
 }
 
