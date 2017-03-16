@@ -21,6 +21,7 @@ public class WordLevelFeatures {
 		System.out.print(isUp + "\t");
 	}
 	
+	
 	public void showWordLevelFeatures(Document doc) {
 		
 		for (Sentence sentence : doc.sentences()) {
