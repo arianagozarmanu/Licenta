@@ -2,6 +2,7 @@ package medicalconcept;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
@@ -15,6 +16,17 @@ import org.clulab.processors.Document;
 
 public class ContextualFeatures {
 
+	public String getContextualFeatures(int index, String token, Sentence sentence, Document doc) throws FileNotFoundException, JWNLException {
+		String result = "";
+		String[] tokens = Util.mkString(sentence.words(), " ").split("\\s");
+		result = isSecondNeighborMG(index, tokens) + "\t"
+				+ hasCommaBeforeOrAfter(index, tokens) + "\t"
+				+ getNrOfDefinitionsInWordNet(token) + "\t"
+				+ getTermFrequency(token, doc);
+		return result;
+	
+	}
+	
 	public void showContextualFeatures(Document doc, Document[] docs) throws FileNotFoundException, JWNLException {
 		for (Sentence sentence : doc.sentences()) {
 			String[] result = Util.mkString(sentence.words(), " ").split("\\s");
@@ -22,7 +34,6 @@ public class ContextualFeatures {
 				System.out.print(result[x] + "\t\t"
 						+ isSecondNeighborMG(x, result) + "\t\t"
 						+ hasCommaBeforeOrAfter(x, result) + "\t\t"
-						+ result[x].length()+ "\t\t"
 						+ getNrOfDefinitionsInWordNet(result[x]) + "\t\t"
 						+ getTFIDF(getTermFrequency(result[x], doc), getInverseDocFrequency(result[x], docs)) + "\t\t"
 						+ getSmoothTFIDF(getTermFrequency(result[x], doc), getInverseDocFrequency(result[x], docs)));
@@ -44,16 +55,18 @@ public class ContextualFeatures {
 	}
 
 	public Boolean hasCommaBeforeOrAfter(int pos, String[] result) {
-		if (pos == result.length - 1 && result[pos - 1].equals(",")) {
-			return true;
-		} else if (pos == 0 && result[pos + 1].equals(",")) {
-			return true;
-		} else if (pos != result.length - 1 && pos != 0
-				&& (result[pos + 1].equals(",") || result[pos - 1].equals(","))) {
-			return true;
-		} else {
-			return false;
-		}
+		if(result.length > 1) {
+			if (pos == 0 && result[pos + 1].equals(",")) {
+				return true;
+			} else if (pos == result.length - 1 && result[pos - 1].equals(",")) {
+				return true;
+			} else if (pos != result.length - 1 && pos != 0
+					&& (result[pos + 1].equals(",") || result[pos - 1].equals(","))) {
+				return true;
+			} else {
+				return false;
+			}
+		} else return false;
 	}
 
 	public double getTermFrequency(String word, Document doc) {
@@ -69,15 +82,48 @@ public class ContextualFeatures {
 			}
 			docLength += result.length;
 		}
-		//System.out.println("Counter="+counter);
-		//System.out.println("Doc length="+docLength);
 		
+		String resultDouble = String.format("%.5f", (double)counter/docLength);
 		if(docLength > 0) {
-			return (double)counter/docLength;
+			return Double.valueOf(resultDouble);
 		} else return 0;
 
 	}
 
+	public int getNrOfDefinitionsInWordNet(String str)
+			throws FileNotFoundException, JWNLException {
+		JWNL.initialize(new FileInputStream(
+				"E:/An4/Licenta/workspace/properties.xml"));
+		Dictionary dictionary = Dictionary.getInstance();
+		IndexWord wordN = dictionary.lookupIndexWord(POS.NOUN, str);
+		IndexWord wordV = dictionary.lookupIndexWord(POS.VERB, str);
+		IndexWord wordAV = dictionary.lookupIndexWord(POS.ADVERB, str);
+		IndexWord wordAJ = dictionary.lookupIndexWord(POS.ADJECTIVE, str);
+		
+		int total = 0;
+		Synset[] senses;
+		
+		if (wordN!=null) {
+			senses = wordN.getSenses();
+			total += senses.length;
+		}
+		if (wordV!=null) {
+			senses = wordV.getSenses();
+			total += senses.length;
+		}
+		if (wordAV!=null) {
+			senses = wordAV.getSenses();
+			total += senses.length;
+		}
+		if (wordAJ!=null) {
+			senses = wordAJ.getSenses();
+			total += senses.length;
+		} 
+		
+		return total;
+	}
+	
+	//Unused methods - IDF si TFIDF
 	public double getInverseDocFrequency(String word, Document[] docs) {
 		int counter = 0;
 		Boolean isNotInDoc = true;
@@ -112,18 +158,6 @@ public class ContextualFeatures {
 
 	public double getSmoothTFIDF(double tf, double idf) {
 		return tf * Math.log(1 + idf);
-	}
-
-	public int getNrOfDefinitionsInWordNet(String str)
-			throws FileNotFoundException, JWNLException {
-		JWNL.initialize(new FileInputStream(
-				"E:/An4/Licenta/workspace/properties.xml"));
-		Dictionary dictionary = Dictionary.getInstance();
-		IndexWord word = dictionary.lookupIndexWord(POS.NOUN, str);
-		if (word!=null) {
-			Synset[] senses = word.getSenses();
-			return senses.length;
-		} else return 0;
 	}
 
 	

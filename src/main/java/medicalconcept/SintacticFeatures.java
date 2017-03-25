@@ -10,7 +10,22 @@ import org.clulab.processors.Sentence;
  *
  */
 public class SintacticFeatures {
-
+	
+	public String getSintacticFeatures(int index, Sentence sentence) {
+		String result = "";
+		String[] resPOS = getCurrentPOS(sentence).split("\\s");
+		String[] resChunk = getChunk(sentence).split("\\s");
+		result = resPOS[index] + "\t"
+				+ resChunk[index] + "\t"
+				+ getBeforePOS(index, sentence) + "\t"
+				+ getBefBefPOS(index, sentence) + "\t"
+				+ getBefBefBefPOS(index, sentence) + "\t"
+				+ getAfterPOS(index, sentence) + "\t"
+				+ getAftAftPOS(index, sentence) + "\t"
+				+ getAftAftAftPOS(index, sentence) + "\t";
+		return result;
+	}
+	
 	public void showSintacticFeatures(Document doc) {
 		
 		for (Sentence sentence : doc.sentences()) {
@@ -19,16 +34,15 @@ public class SintacticFeatures {
 			String[] resPOS = getCurrentPOS(sentence).split("\\s");
 			String[] resChunk = getChunk(sentence).split("\\s");		
 			for (int x=0; x<result.length; x++) {
-				System.out.print(result[x] + "\t\t"
-								+ resPOS[x] + "\t\t"
+				System.out.print(result[x] + "\t"
+								+ resPOS[x] + "\t"
 								+ resChunk[x] + "\t\t"
-								+ getBeforePOS(x, sentence) + "\t\t"
-								+ getBefBefPOS(x, sentence) + "\t\t"
-								+ getBefBefBefPOS(x, sentence) + "\t\t"
-								+ getAfterPOS(x, sentence) + "\t\t"
-								+ getAftAftPOS(x, sentence) + "\t\t"
-								+ getAftAftAftPOS(x, sentence) + "\t\t");
-				System.out.println();
+								+ getBeforePOS(x, sentence) + "\t"
+								+ getBefBefPOS(x, sentence) + "\t"
+								+ getBefBefBefPOS(x, sentence) + "\t"
+								+ getAfterPOS(x, sentence) + "\t"
+								+ getAftAftPOS(x, sentence) + "\t"
+								+ getAftAftAftPOS(x, sentence) + "\t");
 			}
 		}
 	}

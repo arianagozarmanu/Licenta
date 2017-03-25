@@ -1,6 +1,8 @@
 package medicalconcept;
 
 import java.io.*;
+import java.util.List;
+import java.util.Scanner;
 
 import net.didion.jwnl.JWNLException;
 
@@ -8,62 +10,97 @@ import org.clulab.processors.*;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
 public class Main {
-
-	public static final String DUMMY_STRING1 = "Alal bala Port3 IeSi gaD5a . "
-			+ "Mar-3fs ja & sd-pf sfa1 's assg . H/D/F 34 , g ad . No(2) >30% of marg . "
-			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg .";
 	
-	public static final String DUMMY_STRING2 = "Alal bala Port3 IeSi gaD5a . "
-			+ "Mar-3fs ja & sd-pf sfa1 's assg . 11. Furosemide 20 mg Tablet Sig : One ( 1 ) Tablet PO once a day for 2 weeks ."
-			+ "No creams , lotions , powders , or ointments to incisions . Dr Day in 4 weeks (( 469 ) 587-0462 ) please call for appointment";
-	
-	public static final String DUMMY_STRING3 = "Alal bala Port3 IeSi gaD5a . "
-			+ "Coronary artery disease s/p Coronary Artery Bypass Graft x3 "
-			+ "PMH : Carpal tunnel syndrome , Hypertension , Hyperlipidemia , Arthritis";
-	
-	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/sample_input_data";
-	 
 	public static void main(String[] args) throws IOException, JWNLException {
 		
-		Processor proc = new CoreNLPProcessor(true, true, 0, 100);
-		Document doc = proc.annotate(DUMMY_STRING1, false);
+		Processor proc = new CoreNLPProcessor(true, true, 0, 100);;
 		
-		//WordLevelFeatures wlf = new WordLevelFeatures();
-		//wlf.showWordLevelFeatures(doc);
-		
-		//SintacticFeatures sf = new SintacticFeatures();
-		//sf.showSintacticFeatures(doc);
-		
+		WordLevelFeatures wlf = new WordLevelFeatures();
+		SintacticFeatures sf = new SintacticFeatures();
 		ContextualFeatures cf = new ContextualFeatures();
-		Document doc1 = proc.annotate(DUMMY_STRING3, false);
-		Document doc2 = proc.annotate(DUMMY_STRING2, false);
-		Document[] docs={doc, doc1, doc2};
-		cf.showContextualFeatures(doc, docs);
 		
-		//Testare diferenta TFIDF normal si smooth
-/*		double tf = cf.getTermFrequency("bala", doc);
-		System.out.println("TF="+tf);
-		double idf = cf.getInverseDocFrequency("bala", docs);
-		System.out.println("IDF=");
-		System.out.println("TF*IDF="+cf.getTFIDF(tf, idf)+" Smooth="+cf.getSmoothTFIDF(tf, idf));
-		*/
+		List<String> lemmaFeature = Util.getLemmaFromFile();
 		
+		FileWriter fw = new FileWriter(Util.FEATURES_FILE, true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter out = new PrintWriter(bw);
+		
+		String currentLine;
+		String features;
 		//cod pentru citirea tuturor fisierelor
-		/*
-		File folder = new File(RAW_DOCS_PATH);
+		File folder = new File(Util.RAW_DOCS_PATH);
 		for (final File fileEntry : folder.listFiles()) {
             //System.out.println(fileEntry.getName().toString());
-            FileReader fr = new FileReader(RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
+            FileReader fr = new FileReader(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
             
-            String CurrentLine;		//read line-by-line
-            while ((CurrentLine = br.readLine()) != null) {
-				//System.out.println(CurrentLine);
+            //creare doc cu fisierul intreg pentru TF
+            Scanner scanner = new Scanner(new File(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
+            String text = scanner.useDelimiter("\\A").next();
+            Document totalDOC = proc.annotate(text, false);
+            scanner.close();
+            
+            while ((currentLine = br.readLine()) != null) {
+            	Document doc = proc.annotate(currentLine, false);
+            	for (Sentence sentence : doc.sentences()) {
+            		String[] tokens = Util.mkString(sentence.words(), " ").split("\\s");
+            		String[] pos = sentence.tags().get();
+            		//preluare trasaturi pentru fiecare cuvant
+            		for (int x=0; x<tokens.length; x++) {
+            			if(tokenToTake(tokens[x], pos[x])) {
+	            			features = "";
+		            		features += wlf.getWordLevelFeatures(x, tokens[x], sentence);
+		            		features += sf.getSintacticFeatures(x, sentence);
+		            		features += cf.getContextualFeatures(x, tokens[x], sentence, totalDOC);
+		            		for(String str : lemmaFeature) {
+		            			if(str.equals(tokens[x].toLowerCase())) {
+		            				features += "\t" + "true";
+		            			} else {
+		            				features += "\t" + "false";
+		            			}
+		            		}
+		            		out.println(features);
+            			} 
+            		}
+            	}
 			}
+            br.close();
         }
-		*/
-        	
 
+        out.close();
+        System.out.println("Feature writing completed!");
+
+	}
+	
+	public static Boolean tokenToTake(String token, String pos) {
+		
+		//verificare daca contine tokenul e caracter special sau numar
+		Boolean notOK = true;
+		for (int i = 0; i < token.length() && notOK; i++) {
+			if(!Util.SPECIAL_CHARS.contains("" + token.charAt(i))) {
+				notOK = false;
+			}
+		}
+		if(notOK) return false;
+		
+		notOK = true;
+		for (int i = 0; i < token.length() && notOK; i++) {
+			if(!Util.NUMBERS.contains("" + token.charAt(i))) {
+				notOK = false;
+			}
+		}
+		if(notOK) return false;
+		
+		//verificare daca POS e valabil (not CC,CD,DT,EX,IN,-LRB-,LS,PDT,PP,PRPR$,PRP,PRP$,TO,UH)
+		if(pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD") || pos.toUpperCase().equals("DT") 
+				|| pos.toUpperCase().equals("EX") || pos.toUpperCase().equals("IN") || pos.toUpperCase().equals("-LRB-") || pos.toUpperCase().equals("-RRB-")
+				|| pos.toUpperCase().equals("LS") || pos.toUpperCase().equals("PDT") || pos.toUpperCase().equals("PP")
+				|| pos.toUpperCase().equals("PRPR$") || pos.toUpperCase().equals("PRP") || pos.toUpperCase().equals("PRP$")
+				|| pos.toUpperCase().equals("TO") || pos.toUpperCase().equals("UH")) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

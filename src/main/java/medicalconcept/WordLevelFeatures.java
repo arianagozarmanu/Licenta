@@ -13,14 +13,32 @@ import org.clulab.processors.*;
  */
 public class WordLevelFeatures {
 	
-	static final String specialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-	
-	public void upperCaseAtBeginning(String str) {
-		
-		Boolean isUp = Character.isUpperCase(str.charAt(0));
-		System.out.print(isUp + "\t");
+	public String getWordLevelFeatures(int index, String token, Sentence sentence) {
+		String result = "";
+		result += token + "\t";
+		result += wordLength(token);
+		result += upperCaseAtBeginning(token);
+		result += isAllUpperCase(token);
+		result += isMixedCase(token);
+		result += containsAmpersand(token);
+		result += containsComma(token);
+		result += containsDots(token);
+		result += containsGreaterSign(token);
+		result += containsLessSign(token);
+		result += containsMinus(token);
+		result += containsParanthesis(token);
+		result += containsQuotedMark(token);
+		result += containsPercent(token);
+		result += containsSlash(token);
+		result += containsDigits(token);
+		result += containsSpecialCharBefore(index, sentence);
+		result += containsSpecialCharBefBef(index, sentence);
+		result += containsSpecialCharBefBefBef(index, sentence);
+		result += containsSpecialCharAfter(index, sentence);
+		result += containsSpecialCharAftAft(index, sentence);
+		result += containsSpecialCharAftAftAft(index, sentence);
+		return result;
 	}
-	
 	
 	public void showWordLevelFeatures(Document doc) {
 		
@@ -28,9 +46,9 @@ public class WordLevelFeatures {
 			String token = Util.mkString(sentence.words(), " ");
 			String[] result = token.split("\\s");
 			for (int x=0; x<result.length; x++) {
-				System.out.print(result[x] + "\t\t");
-				upperCaseAtBeginning(result[x]);
+				System.out.print(result[x] + "\t");
 				wordLength(result[x]);
+				upperCaseAtBeginning(result[x]);
 				isAllUpperCase(result[x]);
 				isMixedCase(result[x]);
 				containsAmpersand(result[x]);
@@ -50,206 +68,189 @@ public class WordLevelFeatures {
 				containsSpecialCharAfter(x, sentence);
 				containsSpecialCharAftAft(x, sentence);
 				containsSpecialCharAftAftAft(x, sentence);
-				System.out.println();
 			}
 		}	
 	}
 	
-	public void wordLength(String str) {
+	public String wordLength(String str) {
 
-		System.out.print(str.length() + "\t");
+		return str.length() + "\t";
 	}
 	
-	public void isAllUpperCase(String str) {
+	public String isAllUpperCase(String str) {
 		
-				System.out.print(str.equals(str.toUpperCase()) + "\t");
+		return str.equals(str.toUpperCase()) + "\t";
 	}
 	
-	public void isMixedCase(String str) {
-
-		System.out.print(!(str.equals(str.toUpperCase()) 
-							|| str.equals(str.toLowerCase()))
-						    + "\t");
-	}
-	
-	public void containsAmpersand(String str) {
+	public String upperCaseAtBeginning(String str) {
 		
-		System.out.print(str.contains("&") + "\t");
+		Boolean isUp = Character.isUpperCase(str.charAt(0));
+		return isUp + "\t";
 	}
 	
-	public void containsMinus(String str) {
+	public String isMixedCase(String str) {
 
-		System.out.print(str.contains("-") + "\t");
+		return !(str.equals(str.toUpperCase()) 
+					|| str.equals(str.toLowerCase()))
+						  + "\t";
 	}
 	
-	public void containsDots(String str) {
-
-		System.out.print(str.contains(".") + "\t");
-	}
-	
-	public void containsComma(String str) {
+	public String containsAmpersand(String str) {
 		
-		System.out.print(str.contains(",") + "\t");
+		return str.contains("&") + "\t";
 	}
 	
-	public void containsQuotedMark(String str) {
+	public String containsMinus(String str) {
 
-		System.out.print(str.contains("'") + "\t");
+		return str.contains("-") + "\t";
 	}
 	
-	public void containsSlash(String str) {
+	public String containsDots(String str) {
 
-		System.out.print(str.contains("/") + "\t");
+		return str.contains(".") + "\t";
 	}
 	
-	public void containsParanthesis(String str) {
-
-		System.out.print(str.contains("(") + "\t");
-	}
-	
-	public void containsGreaterSign(String str) {
+	public String containsComma(String str) {
 		
-		System.out.print(str.contains(">") + "\t");
+		return str.contains(",") + "\t";
 	}
 	
-	public void containsLessSign(String str) {
+	public String containsQuotedMark(String str) {
 
-		System.out.print(str.contains("<") + "\t");
+		return str.contains("'") + "\t";
 	}
 	
-	public void containsPercent(String str) {
+	public String containsSlash(String str) {
 
-		System.out.print(str.contains("%") + "\t");
+		return str.contains("/") + "\t";
 	}
 	
-	public void containsDigits(String str) {
+	public String containsParanthesis(String str) {
+
+		return str.contains("(") + "\t";
+	}
+	
+	public String containsGreaterSign(String str) {
 		
-		System.out.print(str.matches(".*\\d+.*") + "\t");
+		return str.contains(">") + "\t";
 	}
 	
-	public void containsSpecialCharBefore(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsLessSign(String str) {
+
+		return str.contains("<") + "\t";
+	}
+	
+	public String containsPercent(String str) {
+
+		return str.contains("%") + "\t";
+	}
+	
+	public String containsDigits(String str) {
+		
+		return str.matches(".*\\d+.*") + "\t";
+	}
+	
+	public String containsSpecialCharBefore(int x, Sentence sentence) {
+
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-1].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
 		}
 	}
 	
-	public void containsSpecialCharBefBef(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsSpecialCharBefBef(int x, Sentence sentence) {
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0 || x == 1) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-2].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
+
 		}
 	}
 	
-	public void containsSpecialCharBefBefBef(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsSpecialCharBefBefBef(int x, Sentence sentence) {
+
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0 || x == 1 || x == 2) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-3].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
 		}
 	}
 	
-	public void containsSpecialCharAfter(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsSpecialCharAfter(int x, Sentence sentence) {
+
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+1].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
 		}
 	}
 	
-	public void containsSpecialCharAftAft(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsSpecialCharAftAft(int x, Sentence sentence) {
+
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1 || x == token.length-2) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+2].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
 		}
 	}
 	
-	public void containsSpecialCharAftAftAft(int x, Sentence sentence) {
-		Boolean notSC = true;
+	public String containsSpecialCharAftAftAft(int x, Sentence sentence) {
+		
 		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1 || x == token.length-2 || x == token.length-3) {
-			System.out.print("false" + "\t");
+			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+3].split("");
-			for (int i = 0; i < splitToken.length && notSC; i++) {
-				if (specialCharacters.contains(splitToken[i])) {
-					System.out.print("true" + "\t");
-					notSC = false;
+			for (int i = 0; i < splitToken.length; i++) {
+				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					return "true" + "\t";
 				}
 			}
 			
-			if( notSC ) {
-				System.out.print("false" + "\t");
-			}
+			return "false" + "\t";
 		}
-	}
-	
-	
-	
-	
+	}	
 	
 }
 
