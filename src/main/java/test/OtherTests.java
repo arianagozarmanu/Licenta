@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import medicalconcept.Concept;
 import medicalconcept.Util;
 
 import org.clulab.processors.Document;
@@ -16,9 +19,42 @@ import org.clulab.processors.corenlp.CoreNLPProcessor;
 public class OtherTests {
 
 	public static void main(String[] args) throws IOException {
-		String RAW_DOCS_PATH = "E:/An4/Licenta/sample_input_data";
-		readFromFile(RAW_DOCS_PATH);
+		String RAW_DOCS_PATH = Util.RAW_DOCS_PATH;//"E:/An4/Licenta/sample_input_data";
+		//readFromFile(RAW_DOCS_PATH);
 		//readFileWithClulab(RAW_DOCS_PATH);
+		//takeConObjectsInList();
+		testFeaturesFile();
+	}
+	
+	//preluare categorie pentru fiecare cuvant din .con files
+	public static void takeConObjectsInList() throws IOException {
+
+		File folderTextFiles = new File(Util.RAW_DOCS_PATH);
+		List<Concept> result = new ArrayList<Concept>();
+		String currentLine;
+		for (final File fileEntry : folderTextFiles.listFiles()) {
+			FileReader frCON = new FileReader(Util.RAW_CON_DOCS_PATH + "/" + fileEntry.getName().toString().substring(0,fileEntry.getName().toString().length()-3) + "con");
+			BufferedReader brCON = new BufferedReader(frCON);
+			 while ((currentLine = brCON.readLine()) != null) {
+					 String[] tokens = currentLine.split("\"|:");
+					 String concept = null;
+					 int line = 0;
+					 String category = null;
+					 for (int x=0; x<tokens.length; x++) {
+						 if(x==1) {
+							if(tokens[x].length()>1 && tokens[x].substring(tokens[x].length()-1, tokens[x].length()).equals(".") ) {
+								concept = tokens[x].substring(0,tokens[x].length()-1); 
+							} else {
+								concept = tokens[x];
+							}
+						 }
+						 if(x==2)	line = Integer.parseInt(tokens[x].substring(1,tokens[x].length()));
+						 if(x==5)	category = tokens[x]; 
+					 }
+					 System.out.println(concept + "|" + line + "|" + category);
+
+			 }
+		}
 	}
 	
 	public static void readFromFile(String RAW_DOCS_PATH) throws IOException {
@@ -47,12 +83,31 @@ public class OtherTests {
 			Document doc = proc.annotate(CurrentLine, false);
 			for (Sentence sentence : doc.sentences()) {
         		String token = Util.mkString(sentence.words(), " ");
+        		System.out.println(token);
     			String[] result = token.split("\\s");
     			for (int x=0; x<result.length; x++) {
-    				System.out.print(result[x]);
+    				String word=null;
+    				//pentru ca sentence.words() face ca ( si ) sa fie LRB si RRB
+    				if(result.length - x > 3 && result[x+1].equals("-LRB-") && result[x+3].equals("-RRB-")) {
+    					word = result[x] + "(" + result[x+2] + ")";
+    					x = x+3;
+    				}
+    				else word = result[x];
+    				System.out.print(word+" ");
     			}
     			System.out.println();
         	}
 		}
+	}
+	
+	public static void testFeaturesFile() throws IOException {
+		FileReader fr = new FileReader(Util.FEATURES_FILE);
+		BufferedReader br = new BufferedReader(fr);
+		String CurrentLine;		//read line-by-line
+        while ((CurrentLine = br.readLine()) != null) {
+        	String[] str = CurrentLine.split("\\s");
+        	System.out.println(str.length);
+        }
+        br.close();
 	}
 }

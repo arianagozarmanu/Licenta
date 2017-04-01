@@ -1,4 +1,4 @@
-package medicalconcept;
+package generators;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
+
+import medicalconcept.Util;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Processor;
@@ -39,7 +41,12 @@ public class UniqueLemmaGenerator {
             		String[] pos = sentence.tags().get();
             		for(int i=0 ; i < lemma.length ; i++) {
             			if(notSpCharAndNotNeededPos(lemma[i], pos[i])) {
-            				uniqueLemma.add(lemma[i].toLowerCase());
+            				String word = Util.getWordWithLRBRRB(lemma, i);
+            				//pt ca sentence.words() face ca ( si ) sa fie LRB si RRB
+            				if(word.contains("(")) {
+            					i = i+3;
+            				}
+            				uniqueLemma.add(word.toLowerCase());
             			} else {
             				rejected.println(lemma[i] + "\t" + pos[i]);
             			}
@@ -59,6 +66,10 @@ public class UniqueLemmaGenerator {
 	}
 	
 	public static Boolean notSpCharAndNotNeededPos(String lemma, String pos) {
+		
+		//daca are o litera -> nu poate fi concept
+		if(lemma.length() == 1)
+			return false;
 		
 		//verificare daca contine lemma caracter special sau numar
 		for (int i = 0; i < lemma.length(); i++) {

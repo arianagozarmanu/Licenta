@@ -1,4 +1,6 @@
-package medicalconcept;
+package features;
+
+import medicalconcept.Util;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;

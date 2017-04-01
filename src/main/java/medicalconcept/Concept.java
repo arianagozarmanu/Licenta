@@ -1,6 +1,6 @@
 package medicalconcept;
 
-public class Result {
+public class Concept {
 
 	private String name;
 	private int line;

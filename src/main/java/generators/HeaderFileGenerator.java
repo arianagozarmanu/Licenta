@@ -1,4 +1,4 @@
-package medicalconcept;
+package generators;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import medicalconcept.Util;
 import net.didion.jwnl.JWNLException;
 
 public class HeaderFileGenerator {

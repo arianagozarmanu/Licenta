@@ -1,4 +1,6 @@
-package medicalconcept;
+package features;
+
+import medicalconcept.Util;
 
 import org.clulab.processors.*;
 

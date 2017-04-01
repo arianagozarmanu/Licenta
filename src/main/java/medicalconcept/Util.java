@@ -25,11 +25,13 @@ public final class Util {
 			+ "PMH : Carpal tunnel syndrome , Hypertension , Hyperlipidemia , Arthritis";
 	
 	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY";
+	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY_CON";
 	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/Lemma/lemma.txt";
 	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/Lemma/rejected-lemma.txt";
 	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/Lemma/features.txt";
+	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/Lemma/con-procesat.txt";
 	
-	public static final String SPECIAL_CHARS = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+	public static final String SPECIAL_CHARS = "!#$%&'*+,-./:;<=>?@[]^_`{|}~";
 	public static final String NUMBERS = "0123456789";
 	
 	public static final String FEATURE_HEADER = "Concept" + "\t" + "Length" + "\t" + "Begin-UpperCase" + "\t" + "All-UpperCase" + "\t" 
@@ -65,5 +67,17 @@ public final class Util {
         }
         br.close();
         return lemma;
+	}
+	
+	public static String getWordWithLRBRRB(String[] tokens, int x) {
+		String word = null;
+		//if(tokens.length - x > 3) //verificare cele 3 cuvinte urmatoare
+			//System.out.println(tokens[x]+"|"+tokens[x+1]+"|"+tokens[x+2]+"|"+tokens[x+3]+"|");
+		if(tokens.length - x > 3 && tokens[x+1].toLowerCase().equals("-lrb-") && tokens[x+3].toLowerCase().equals("-rrb-")) {
+			word = tokens[x] + "(" + tokens[x+2] + ")";
+			//System.out.println(word);
+		}
+		else word = tokens[x];
+		return word;		
 	}
 }
