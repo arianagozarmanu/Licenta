@@ -12,17 +12,11 @@ import org.clulab.processors.Sentence;
 
 public final class Util {
 
-	public static final String DUMMY_STRING1 = "Alal bala Port3 IeSi gaD5a . "
+	public static final String DUMMY_STRING1 = "Alal bala Port3 IeSi gaD5a artera aorta . "
 			+ "Mar-3fs ja & sd-pf sfa1 's assg . H/D/F 34 , g ad . No(2) >30% of marg . "
-			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg .";
+			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg artera aorta. The thoracic artera aorta is broken x3 mg.";
 	
-	public static final String DUMMY_STRING2 = "Alal bala Port3 IeSi gaD5a . "
-			+ "Mar-3fs ja & sd-pf sfa1 's assg . 11. Furosemide 20 mg Tablet Sig : One ( 1 ) Tablet PO once a day for 2 weeks ."
-			+ "No creams , lotions , powders , or ointments to incisions . Dr Day in 4 weeks (( 469 ) 587-0462 ) please call for appointment";
-	
-	public static final String DUMMY_STRING3 = "Alal bala Port3 IeSi gaD5a . "
-			+ "Coronary artery disease s/p Coronary Artery Bypass Graft x3 "
-			+ "PMH : Carpal tunnel syndrome , Hypertension , Hyperlipidemia , Arthritis";
+	public static final String DUMMY_STRING2 = "The thoracic, artera aorta is broken x3 mg.";
 	
 	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY";
 	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY_CON";

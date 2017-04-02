@@ -2,7 +2,6 @@ package features;
 
 import medicalconcept.Util;
 
-import org.clulab.processors.Sentence;
 
 public class NgramLevelFeatures {
 
@@ -26,9 +25,9 @@ public class NgramLevelFeatures {
 		result += containsSpecialCharBefore(wholeString, ngram);
 		result += containsSpecialCharBefBef(wholeString, ngram);
 		result += containsSpecialCharBefBefBef(wholeString, ngram);
-		//result += containsSpecialCharAfter(index, sentence);
-		//result += containsSpecialCharAftAft(index, sentence);
-		//result += containsSpecialCharAftAftAft(index, sentence);
+		result += containsSpecialCharAfter(wholeString, ngram);
+		result += containsSpecialCharAftAft(wholeString, ngram);
+		result += containsSpecialCharAftAftAft(wholeString, ngram);
 		return result;
 	}
 	
@@ -112,7 +111,7 @@ public class NgramLevelFeatures {
 	
 	private String containsSpecialCharBefore(String[] whole, String[] ngrams) {
 		String wordBefore = getWordBeforeOrAfter(whole, ngrams, 1, "before");
-		
+		//System.out.println("Before:"+wordBefore);
 		if(wordBefore.equals("")) {
 			return "false" + "\t";
 		} else {
@@ -129,7 +128,7 @@ public class NgramLevelFeatures {
 	
 	private String containsSpecialCharBefBef(String[] whole, String[] ngrams) {
 		String wordBefore = getWordBeforeOrAfter(whole, ngrams, 2, "before");
-		
+		//System.out.println("BeforeB:"+wordBefore);
 		if(wordBefore.equals("")) {
 			return "false" + "\t";
 		} else {
@@ -147,7 +146,7 @@ public class NgramLevelFeatures {
 	private String containsSpecialCharBefBefBef(String[] whole, String[] ngrams) {
 		if(whole.length > 4) {
 			String wordBefore = getWordBeforeOrAfter(whole, ngrams, 3, "before");
-			
+			//System.out.println("BeforeBB:"+wordBefore);
 			if(wordBefore.equals("")) {
 				return "false" + "\t";
 			} else {
@@ -162,55 +161,56 @@ public class NgramLevelFeatures {
 		return "false" + "\t";
 	}
 	
-	private String containsSpecialCharAfter(int x, Sentence sentence) {
-
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
-		if( x == token.length-1) {
+	private String containsSpecialCharAfter(String[] whole, String[] ngrams) {
+		String wordBefore = getWordBeforeOrAfter(whole, ngrams, 1, "after");
+		//System.out.println("After:"+wordBefore);
+		if(wordBefore.equals("")) {
 			return "false" + "\t";
 		} else {
-			String splitToken[] = token[x+1].split("");
+			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
 				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
-			
-			return "false" + "\t";
 		}
-	}
-	
-	private String containsSpecialCharAftAft(int x, Sentence sentence) {
-
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
-		if( x == token.length-1 || x == token.length-2) {
-			return "false" + "\t";
-		} else {
-			String splitToken[] = token[x+2].split("");
-			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
-					return "true" + "\t";
-				}
-			}
-			
-			return "false" + "\t";
-		}
-	}
-	
-	private String containsSpecialCharAftAftAft(int x, Sentence sentence) {
 		
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
-		if( x == token.length-1 || x == token.length-2 || x == token.length-3) {
+		return "false" + "\t";
+	}
+	
+	private String containsSpecialCharAftAft(String[] whole, String[] ngrams) {
+		String wordBefore = getWordBeforeOrAfter(whole, ngrams, 2, "after");
+		//System.out.println("AfterB:"+wordBefore);
+		if(wordBefore.equals("")) {
 			return "false" + "\t";
 		} else {
-			String splitToken[] = token[x+3].split("");
+			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
 				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
-			
-			return "false" + "\t";
 		}
+		
+		return "false" + "\t";
+	}
+	
+	private String containsSpecialCharAftAftAft(String[] whole, String[] ngrams) {
+		if(whole.length > 4) {
+			String wordBefore = getWordBeforeOrAfter(whole, ngrams, 3, "after");
+			//System.out.println("AfterBB:"+wordBefore);
+			if(wordBefore.equals("")) {
+				return "false" + "\t";
+			} else {
+				String splitToken[] = wordBefore.split("");
+				for (int i = 0; i < splitToken.length; i++) {
+					if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+						return "true" + "\t";
+					}
+				}
+			}
+		} 
+		return "false" + "\t";
 	}
 	
 	private String getWordBeforeOrAfter(String[] whole, String[] ngrams, int pos, String method) {
@@ -221,15 +221,15 @@ public class NgramLevelFeatures {
 			String last = ngrams[ngrams.length-1];
 			String prelast = ngrams[ngrams.length-2];
 			notFound = true;
-			count = -1;
-			for(int i=0; i<whole.length-1 && notFound; i++) {
-				if(whole[i].equals(prelast) && whole[i+1].equals(last)){
+			count = 0;
+			for(int i=1; i<whole.length && notFound; i++) {
+				if(whole[i-1].equals(prelast) && whole[i].equals(last)){
 					notFound = false;
 				}
 				count++;
 			}
-			if(count < (whole.length-2 - (pos-1)))
-				result = whole[count+2];
+			if(count < (whole.length-1-pos))
+				result = whole[count+pos];
 			
 		} else {
 			String first = ngrams[0];
@@ -243,7 +243,7 @@ public class NgramLevelFeatures {
 				count++;
 			}
 			if(count > (0 + (pos-1))) {
-				result = whole[count-1];
+				result = whole[count-pos];
 			}
 		}
 		
