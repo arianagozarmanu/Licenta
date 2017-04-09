@@ -7,6 +7,7 @@ public class NgramLevelFeatures {
 
 	public String getNgramLevelFeatures(String[] wholeString, String[] ngram, String ngramNesplit) {
 		String result = "";
+		result += Util.concatenateWithUnderscore(ngram) + "\t";
 		result += wordLength(ngramNesplit);
 		result += upperCaseAtBeginning(ngramNesplit);
 		result += isAllUpperCase(ngramNesplit);

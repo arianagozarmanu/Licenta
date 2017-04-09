@@ -46,15 +46,18 @@ public class NgramContextualFeatures {
 		int counter = 0;
 		int docLength = 0;
 		String result = "";
+		String concatStr = "";
 		for (Sentence sentence : doc.sentences()) {
-			result = Util.mkString(sentence.words(), " ");
-			if (result.toLowerCase().contains(word)) {
+			result = Util.concatenateString(sentence.words());
+			concatStr = Util.concatenateString(word.split("\\s"));
+			//System.out.println(result+"|"+concatStr);
+			if (result.toLowerCase().contains(concatStr.toLowerCase())) {
 				counter++;
 			}
 			docLength += result.split("\\s").length;
 		}
-		
-		String resultDouble = String.format("%.5f", (double)counter/(docLength/ngramWordSize));
+
+		String resultDouble = String.format("%.5f", (double)counter/docLength);
 		return Double.valueOf(resultDouble);
 	}
 

@@ -63,7 +63,11 @@ public class Main {
             		String[] lemmas = sentence.lemmas().get();
             		
             		//preluare trasaturi pentru n-grame
-            		
+            		List<String> ngramFeatures = ngrams.generateNGramFeatures(sentence, totalDOC, conObjects, lemmaFeature);
+            		//scriere in fisier trasaturi ngrame
+            		for(String feature : ngramFeatures) {
+            			out.println(feature);
+            		}
             		
             		//preluare trasaturi pentru fiecare cuvant
             		for (int x=0; x<tokens.length; x++) {
@@ -79,26 +83,13 @@ public class Main {
 		            		features += wlf.getWordLevelFeatures(x, word, sentence);
 		            		features += sf.getSintacticFeatures(x, sentence);
 		            		features += cf.getContextualFeatures(x, word, sentence, totalDOC);
-		            		//adaugare features lemma cuvintelor
-		            		for(String str : lemmaFeature) {
-		            			if(str.equals(lemma.toLowerCase())) {
-		            				features += "\t" + "true";
-		            			} else {
-		            				features += "\t" + "false";
-		            			}
-		            		}
-		            		//adaugare categorie
-		            		Boolean notMedicalConcept = true;
 		            		
-		            		for(int i = 0; i<conObjects.size() && notMedicalConcept; i++) {
-		            			if(conObjects.get(i).getName().toLowerCase().equals(word.toLowerCase())) {
-		            				notMedicalConcept = false;
-		            				features += "\t" + conObjects.get(i).getCategory().toLowerCase();
-		            			}
-		            		}
-		            		if(notMedicalConcept) {
-		            			features += "\t" + "none";
-		            		}
+		            		//adaugare features lemma cuvintelor
+		            		features = Util.setLemmaFeature(lemmaFeature, features, lemma);
+		            		
+		            		//adaugare categorie
+		            		features = Util.setCategory(conObjects, features, word);
+		            		
 		            		out.println(features);
             			} 
             		}
@@ -135,12 +126,25 @@ public class Main {
 		if(token.length() == 1)
 			return false;
 		
-		//verificare daca POS e valabil (not CC,CD,DT,EX,IN,-LRB-,LS,PDT,PP,PRPR$,PRP,PRP$,TO,UH)
-		if(pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD") || pos.toUpperCase().equals("DT") 
-				|| pos.toUpperCase().equals("EX") || pos.toUpperCase().equals("IN") || pos.toUpperCase().equals("-LRB-") || pos.toUpperCase().equals("-RRB-")
-				|| pos.toUpperCase().equals("LS") || pos.toUpperCase().equals("PDT") || pos.toUpperCase().equals("PP")
-				|| pos.toUpperCase().equals("PRPR$") || pos.toUpperCase().equals("PRP") || pos.toUpperCase().equals("PRP$")
-				|| pos.toUpperCase().equals("TO") || pos.toUpperCase().equals("UH")) {
+		//verificare daca POS e valabil (not CC,CD,DT,EX,IN,-LRB-,LS,PDT,PP,PRPR$,PRP,PRP$,TO,UH,WDT,WP,WRB)
+		if (pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD")
+				|| pos.toUpperCase().equals("DT")
+				|| pos.toUpperCase().equals("EX")
+				|| pos.toUpperCase().equals("IN")
+				|| pos.toUpperCase().equals("-LRB-")
+				|| pos.toUpperCase().equals("-RRB-")
+				|| pos.toUpperCase().equals("LS")
+				|| pos.toUpperCase().equals("PDT")
+				|| pos.toUpperCase().equals("PP")
+				|| pos.toUpperCase().equals("PRPR$")
+				|| pos.toUpperCase().equals("PRP")
+				|| pos.toUpperCase().equals("PRP$")
+				|| pos.toUpperCase().equals("TO")
+				|| pos.toUpperCase().equals("UH")
+				|| pos.toUpperCase().equals("WDT")
+				|| pos.toUpperCase().equals("WP$")
+				|| pos.toUpperCase().equals("WP")
+				|| pos.toUpperCase().equals("WRB")) {
 			return false;
 		}
 		
@@ -190,6 +194,8 @@ public class Main {
 		br.close();
 		return result;
 	}
+	
+
 
 }
 

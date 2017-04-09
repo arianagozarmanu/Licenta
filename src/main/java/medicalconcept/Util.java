@@ -14,13 +14,14 @@ public final class Util {
 
 	public static final String DUMMY_STRING1 = "Alal bala Port3 IeSi gaD5a artera aorta . "
 			+ "Mar-3fs ja & sd-pf sfa1 's assg . H/D/F 34 , g ad . No(2) >30% of marg . "
-			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg artera aorta. The thoracic artera aorta is broken x3 mg.";
+			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg artera aorta. The thoracic, artera aorta is broken x3 mg.";
 	
 	public static final String DUMMY_STRING2 = "The thoracic, artera aorta is broken x3 mg.";
 	
 	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY";
 	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY_CON";
 	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/Lemma/lemma.txt";
+	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/Lemma/medicalconcept.arff";
 	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/Lemma/rejected-lemma.txt";
 	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/Lemma/features.txt";
 	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/Lemma/con-procesat.txt";
@@ -40,6 +41,14 @@ public final class Util {
 		for (int i = 0; i < sa.length; i++) {
 			if (i > 0)
 				os.append(sep);
+			os.append(sa[i]);
+		}
+		return os.toString();
+	}
+	
+	public static String concatenateString(String[] sa) {
+		StringBuilder os = new StringBuilder();
+		for (int i = 0; i < sa.length; i++) {
 			os.append(sa[i]);
 		}
 		return os.toString();
@@ -73,5 +82,63 @@ public final class Util {
 		}
 		else word = tokens[x];
 		return word;		
+	}
+	
+	public static String setLemmaFeature(List<String> lemmaFeature, String features, String lemma) {
+		for(String str : lemmaFeature) {
+			if(str.equals(lemma.toLowerCase())) {
+				features += "\t" + "true";
+			} else {
+				features += "\t" + "false";
+			}
+		}
+		
+		return features;
+	}
+	
+	public static String setLemmaFeatureForNgrams(List<String> lemmaFeature, String features, String[] lemmas) {
+		
+		for (String str : lemmaFeature) {
+			boolean notFound = true;
+			for (String lemma : lemmas) {	
+				if (str.equals(lemma.toLowerCase()) && notFound) {
+					features += "\t" + "true";
+					notFound = false;
+				} 
+			}
+			if(notFound) {
+				features += "\t" + "false";
+			}
+		}
+
+		return features;
+	}
+	
+	public static String setCategory(List<Concept> conObjects, String features, String word) {
+		Boolean notMedicalConcept = true;
+		
+		for(int i = 0; i<conObjects.size() && notMedicalConcept; i++) {
+			if(concatenateString(conObjects.get(i).getName().split("\\s")).toLowerCase().equals(concatenateString(word.split("\\s")).toLowerCase())) {
+				notMedicalConcept = false;
+				features += "\t" + conObjects.get(i).getCategory().toLowerCase();
+			}
+		}
+		if(notMedicalConcept) {
+			features += "\t" + "none";
+		}
+		
+		return features;
+	}
+	
+	public static String concatenateWithUnderscore(String[] str) {
+		String result="";
+		for(int i=0; i<str.length; i++) {
+			if(i==str.length-1){
+				result += str[i];
+			} else {
+				result += str[i] + "_";
+			}
+		}
+		return result;
 	}
 }

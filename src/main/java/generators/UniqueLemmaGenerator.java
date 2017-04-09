@@ -67,7 +67,7 @@ public class UniqueLemmaGenerator {
 	
 	public static Boolean notSpCharAndNotNeededPos(String lemma, String pos) {
 		
-		//daca are o litera -> nu poate fi concept
+		//daca e formata dintr-un caracter nu poate fi concept
 		if(lemma.length() == 1)
 			return false;
 		
@@ -82,11 +82,24 @@ public class UniqueLemmaGenerator {
 		}
 		
 		//verificare daca POS e valabil (not CC,CD,DT,EX,IN,-LRB-,LS,PDT,PP,PRPR$,PRP,PRP$,TO,UH)
-		if(pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD") || pos.toUpperCase().equals("DT") 
-				|| pos.toUpperCase().equals("EX") || pos.toUpperCase().equals("IN") || pos.toUpperCase().equals("-LRB-") || pos.toUpperCase().equals("-RRB-")
-				|| pos.toUpperCase().equals("LS") || pos.toUpperCase().equals("PDT") || pos.toUpperCase().equals("PP")
-				|| pos.toUpperCase().equals("PRPR$") || pos.toUpperCase().equals("PRP") || pos.toUpperCase().equals("PRP$")
-				|| pos.toUpperCase().equals("TO") || pos.toUpperCase().equals("UH")) {
+		if (pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD")
+				|| pos.toUpperCase().equals("DT")
+				|| pos.toUpperCase().equals("EX")
+				|| pos.toUpperCase().equals("IN")
+				|| pos.toUpperCase().equals("-LRB-")
+				|| pos.toUpperCase().equals("-RRB-")
+				|| pos.toUpperCase().equals("LS")
+				|| pos.toUpperCase().equals("PDT")
+				|| pos.toUpperCase().equals("PP")
+				|| pos.toUpperCase().equals("PRPR$")
+				|| pos.toUpperCase().equals("PRP")
+				|| pos.toUpperCase().equals("PRP$")
+				|| pos.toUpperCase().equals("TO")
+				|| pos.toUpperCase().equals("UH")
+				|| pos.toUpperCase().equals("WDT")
+				|| pos.toUpperCase().equals("WP$")
+				|| pos.toUpperCase().equals("WP")
+				|| pos.toUpperCase().equals("WRB")) {
 			return false;
 		}
 		

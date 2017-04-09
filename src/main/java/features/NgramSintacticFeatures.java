@@ -8,26 +8,14 @@ public class NgramSintacticFeatures {
 
 	public String getNgramSintacticFeatures(String[] wholeString, String[] wholePOS, String[] ngram, String[] pos, String[] chunk) {
 		String result = "";
-		result = concatenateWithUnderscore(pos) + "\t"
-				+ concatenateWithUnderscore(chunk) + "\t"
+		result = Util.concatenateWithUnderscore(pos) + "\t"
+				+ Util.concatenateWithUnderscore(chunk) + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 1, "before") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 2, "before") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 3, "before") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 1, "after") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 2, "after") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 3, "after") + "\t";
-		return result;
-	}
-	
-	private String concatenateWithUnderscore(String[] str) {
-		String result="";
-		for(int i=0; i<str.length; i++) {
-			if(i==str.length-1){
-				result += str[i];
-			} else {
-				result += str[i] + "_";
-			}
-		}
 		return result;
 	}
 	
