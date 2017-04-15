@@ -17,7 +17,7 @@ public class WordLevelFeatures {
 	
 	public String getWordLevelFeatures(int index, String token, Sentence sentence) {
 		String result = "";
-		result += token + "\t";
+		//result += token + "\t";
 		result += wordLength(token);
 		result += upperCaseAtBeginning(token);
 		result += isAllUpperCase(token);

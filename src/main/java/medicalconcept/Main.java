@@ -47,7 +47,7 @@ public class Main {
             
             //creare lista de obiecte din fisierele .con pentru preluare categorie
             List<Concept> conObjects = new ArrayList<Concept>();
-            conObjects = takeConObjectsIntoList(fileEntry);
+            conObjects = Util.takeConObjectsIntoList(fileEntry);
             
             //creare doc cu fisierul intreg pentru TF
             Scanner scanner = new Scanner(new File(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
@@ -151,49 +151,7 @@ public class Main {
 		return true;
 	}
 	
-	private static List<Concept> takeConObjectsIntoList(File fileEntry) throws IOException {
-		FileWriter fw = new FileWriter(Util.CON_PROCESSED_FILE, true);
-		BufferedWriter bw = new BufferedWriter(fw);
-		PrintWriter out = new PrintWriter(bw);
-		
-		FileReader frCON = new FileReader(Util.RAW_CON_DOCS_PATH + "/" + fileEntry.getName().toString().substring(0,fileEntry.getName().toString().length()-3) + "con");
-        //System.out.println("Citire din " + fileEntry.getName().toString().substring(0,fileEntry.getName().toString().length()-3) + "con");
-		BufferedReader br = new BufferedReader(frCON);
-		List<Concept> result = new ArrayList<Concept>();
-		String currentLine;
-		while ((currentLine = br.readLine()) != null) {
-			String[] tokens = currentLine.split("\"|:");
-			String concept = null;
-			int line = 0;
-			String category = null;
-			for (int x=0; x<tokens.length; x++) {
-				if(x==1) {
-					//scot punctul de la final daca vreun concept are
-					if(tokens[x].length()>1 && tokens[x].substring(tokens[x].length()-1, tokens[x].length()).equals(".") ) {
-						concept = tokens[x].substring(0,tokens[x].length()-1); 
-					} else {
-						concept = tokens[x];
-					}
-				}
-				if(x==2)	line = Integer.parseInt(tokens[x].substring(1,tokens[x].length()));
-				if(x==5)	category = tokens[x]; 
-			}
-			Concept conceptObj = new Concept();
-			conceptObj.setName(concept);
-			conceptObj.setLine(line);
-			conceptObj.setCategory(category);
-			result.add(conceptObj);
-			//System.out.println(concept + "|" + line + "|" + category);
-		}
-		
-		for(Concept con: result) {
-			out.println(con.getName()+"|"+con.getLine()+"|"+con.getCategory());
-		}
-		
-		out.close();
-		br.close();
-		return result;
-	}
+
 	
 
 

@@ -2,8 +2,6 @@ package features;
 
 import medicalconcept.Util;
 
-import org.clulab.processors.Sentence;
-
 public class NgramSintacticFeatures {
 
 	public String getNgramSintacticFeatures(String[] wholeString, String[] wholePOS, String[] ngram, String[] pos, String[] chunk) {

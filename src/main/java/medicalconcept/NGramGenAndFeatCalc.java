@@ -70,8 +70,8 @@ public class NGramGenAndFeatCalc {
 			String chunkString = makeString(chunks);
 			
 			int ngramMaxLength = tokens.length - 2;
-			if(ngramMaxLength > 8) {
-				ngramMaxLength = 8;
+			if(ngramMaxLength > 5) {
+				ngramMaxLength = 5;
 			}
 			
 			for (int n = 2; n <= ngramMaxLength; n++) {

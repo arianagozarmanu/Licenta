@@ -104,9 +104,11 @@ public class OtherTests {
 		FileReader fr = new FileReader(Util.FEATURES_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String CurrentLine;		//read line-by-line
+		int count = 1;
         while ((CurrentLine = br.readLine()) != null) {
         	String[] str = CurrentLine.split("\\s");
-        	System.out.println(str.length);
+        	System.out.println(count+":"+str.length);
+        	count++;
         }
         br.close();
 	}

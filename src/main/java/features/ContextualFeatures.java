@@ -2,7 +2,6 @@ package features;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
 
 import medicalconcept.Util;
 import net.didion.jwnl.JWNL;
@@ -83,7 +82,7 @@ public class ContextualFeatures {
 			}
 			docLength += result.length;
 		}
-		
+		//System.out.println("Count="+counter+";DocLength="+docLength+";Rez="+(double)counter/docLength);
 		String resultDouble = String.format("%.5f", (double)counter/docLength);
 		if(docLength > 0) {
 			return Double.valueOf(resultDouble);
