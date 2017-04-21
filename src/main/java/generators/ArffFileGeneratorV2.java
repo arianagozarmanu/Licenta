@@ -10,10 +10,9 @@ import java.util.List;
 
 import medicalconcept.Util;
 import weka.core.Attribute;
-import weka.core.DenseInstance;
 import weka.core.Instances;
 
-public class ArffFileGenerator {
+public class ArffFileGeneratorV2 {
 
 	public static void main(String[] args) throws Exception {
 		ArrayList<Attribute> atts;
@@ -26,8 +25,6 @@ public class ArffFileGenerator {
 		
 		//1. set up Attributes
 		atts = new ArrayList<Attribute>();
-		//string
-		//atts.add(new Attribute("concept", (ArrayList<String>) null));
 		//numeric
 		atts.add(new Attribute("lengthWord"));	
 		//nominal
@@ -84,60 +81,58 @@ public class ArffFileGenerator {
 		//2. create Instances object
 		data = new Instances("MedicalConcepts", atts, 0);
 		
+		FileWriter fw = new FileWriter(Util.ARFF_FILE, false);
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter out = new PrintWriter(bw);
+
+		out.println(data);
+		
 		//3. fill with data
 		FileReader fr = new FileReader(Util.FEATURES_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 		int count = 0;
 		while ((currentLine = br.readLine()) != null) {
-			if(count > 0) {
-				String[] instances = currentLine.split("\\s");
-				System.out.println("Nr. of instances:"+instances.length);
-				//System.out.println("count="+count);
-				//System.out.println("line="+currentLine);
-				vals = new double[data.numAttributes()];
-				for(int j=0 ; j<instances.length; j++) {
-					//System.out.println(instances[j]);
-					if(j == 0) {
-						System.out.println("Integer"+instances[j]);
-						vals[j] = Integer.parseInt(instances[j]);
-					} else if(j == instances.length-1) {
-						System.out.println("Category"+instances[j]);
-						vals[j] = attValsCat.indexOf(instances[j]);
-					} else if (j > 0 && j < 21) {
-						System.out.println("Boolean1"+instances[j]);
-						vals[j] = attValsBool.indexOf(instances[j]);
-					} else if (j == 29 || j == 30 || j > 32) {
-						System.out.println("Boolean2"+instances[j]);
-						vals[j] = attValsBool.indexOf(instances[j]);
-					} else if(j == 31) {
-						System.out.println("Integer"+instances[j]);
-						vals[j] = Integer.parseInt(instances[j]);
-					} else if(j == 32) {
-						System.out.println("Double"+instances[j]);
-						vals[j] = Double.parseDouble(instances[j]);
+			if (count > 0) {
+				String[] tokens = currentLine.split("\\s");
+				int tokensLength = tokens.length;
+				String instances = "";
+				for (int i = 0; i < tokensLength; i++) {
+					// inlocuieste ',' de la POS deoarece ARFF 
+					// are ca si separator ',' si e conflict
+					tokens[i] = changeIntoComma(tokens[i]);
+					if (i == tokensLength - 1) {
+						instances += tokens[i];
 					} else {
-						System.out.println("String"+instances[j]);
-						vals[j] = data.attribute(j).addStringValue(instances[j]);
+						instances += tokens[i] + ",";
 					}
 				}
-				// add
-				data.add(new DenseInstance(1.0, vals));
-				//System.out.println(data);	//cand nu mai e none, ceva se intampla nu stiu ce 
+				out.println(instances);
 			}
-			//System.out.println("count="+count);
 			count++;
 		}
+		
 		br.close();
-//		System.out.println("Am iesit din DenseInstance");
-		FileWriter fw = new FileWriter(Util.ARFF_FILE, false);
-		BufferedWriter bw = new BufferedWriter(fw);
-		PrintWriter out = new PrintWriter(bw);
-//		System.out.println("Am declarat fisierul");
-		out.println(data);
 		out.close();
 		
 		System.out.println("Nr. of instances = "+(count-1));
+
+	}
+	
+	private static String changeIntoComma(String str) {
+		String rez = str;
+		if(str.contains(",")) {
+			//System.out.println(str);
+			rez = str.replace(",", "comma");
+			//System.out.println(rez);
+		}
+		String next = rez;
+		if(str.contains("''")) {
+			//System.out.println(str);
+			rez = next.replace("''", "quotes");
+			//System.out.println(rez);
+		}
+		return rez;
 	}
 	
 }

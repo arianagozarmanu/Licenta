@@ -100,16 +100,36 @@ public class OtherTests {
 		}
 	}
 	
+	/**
+	 * Testul preia fisierul de features si verifica daca 
+	 * numarul elementelor de pe fiecare linie este acelasi 
+	 * @throws IOException
+	 */
 	public static void testFeaturesFile() throws IOException {
 		FileReader fr = new FileReader(Util.FEATURES_FILE);
 		BufferedReader br = new BufferedReader(fr);
-		String CurrentLine;		//read line-by-line
+		String CurrentLine; // read line-by-line
 		int count = 1;
-        while ((CurrentLine = br.readLine()) != null) {
-        	String[] str = CurrentLine.split("\\s");
-        	System.out.println(count+":"+str.length);
-        	count++;
-        }
-        br.close();
+		int first = 0, next = 0;
+		Boolean isOK = true;
+		while ((CurrentLine = br.readLine()) != null && isOK) {
+			if (count == 1) {
+				first = next = CurrentLine.split("\\s").length;
+			} else {
+				next = CurrentLine.split("\\s").length;
+				if (first != next) {
+					isOK = false;
+				}
+			}
+			count++;
+		}
+
+		if (isOK) {
+			System.out.println("Fisierul este valid! Un sir are " + next + " instante.");
+		} else {
+			System.out.println("Fisierul are " + next + " elemente in loc de "
+					+ first + " la linia " + (count - 1));
+		}
+		br.close();
 	}
 }

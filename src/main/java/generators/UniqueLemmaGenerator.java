@@ -41,15 +41,18 @@ public class UniqueLemmaGenerator {
 		//preluare lemma unic
 		Set<String> uniqueLemma = new HashSet<String>();
 		
+		//pentru Lemma cu Term Frequency daca se poate scoate ceva
+//		HashMap<String,Double> hmap = new HashMap<String,Double>();
+		
 		for (final File fileEntry : folder.listFiles()) {
-            //System.out.println(fileEntry.getName().toString());
+            System.out.println(fileEntry.getName().toString());
             FileReader fr = new FileReader(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
             
             //creare fisier analiza lemma conform TF ------------------------ start declaratii analiza
 //    		PrintWriter outLemmaTF = new PrintWriter(LEMMA_TF_ORDERED + "/" + "lemmaTF" + fileEntry.getName().toString(), "UTF-8");
-//    		
-//            //creare doc cu fisierul intreg pentru TF
+    		
+            //creare doc cu fisierul intreg pentru TF
 //            Scanner scanner = new Scanner(new File(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
 //            String text = scanner.useDelimiter("\\A").next();
 //            Document totalDOC = proc.annotate(text, false);
@@ -57,7 +60,7 @@ public class UniqueLemmaGenerator {
 //            
 //            ContextualFeatures cf = new ContextualFeatures();
 //            Double tf = 0.0;
-//            HashMap<String,Double> hmap = new HashMap<String,Double>();
+//            hmap.clear(); 
             //-------------------------------------- end declaratii analiza
             
             String CurrentLine;		//read line-by-line
@@ -85,7 +88,7 @@ public class UniqueLemmaGenerator {
             	}
 			}
             br.close();
-//			  Analiza TF pentru lemma           
+			//Analiza TF pentru lemma           
 //            hmap = (HashMap<String, Double>) MapUtil.sortByValue(hmap);
 //            Set<Entry<String, Double>> set = hmap.entrySet();
 //            Iterator<Entry<String, Double>> iterator = set.iterator();

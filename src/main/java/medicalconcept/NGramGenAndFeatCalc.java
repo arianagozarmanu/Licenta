@@ -68,6 +68,12 @@ public class NGramGenAndFeatCalc {
 			String posString = makeString(pos);
 			String lemmaString = makeString(lemmas);
 			String chunkString = makeString(chunks);
+
+//			System.out.println(tokensString);
+//			System.out.println(posString);
+//			System.out.println(lemmaString);
+//			System.out.println(chunkString);
+//			System.out.println("-----------------------------------------------");
 			
 			int ngramMaxLength = tokens.length - 2;
 			if(ngramMaxLength > 5) {
@@ -79,7 +85,23 @@ public class NGramGenAndFeatCalc {
 				List<String> posgrams = ngrams(n, posString);
 				List<String> lemgrams = ngrams(n, lemmaString);
 				List<String> chunkgrams = ngrams(n, chunkString);
-				for (int i = 0; i < ngrams.size(); i++) {
+				int ngramsize = ngrams.size();
+				int possize = posgrams.size();
+				if(ngramsize != possize) {
+					System.out.println(ngrams+"|"+ngramsize+"|pos:"+possize);
+					System.out.println(posgrams);
+				    if (tokensString.charAt(tokensString.length()-2)=='?') {
+				    	posString = posString + " ?";
+				    }
+				    if (tokensString.charAt(tokensString.length()-2)=='!') {
+				    	posString = posString + " !";
+				    }
+				    posgrams = ngrams(n, posString);
+//					System.out.println(lemgrams);
+//					System.out.println(chunkgrams);
+				}
+				
+				for (int i = 0; i < ngramsize; i++) {
 					if (ngramToTake(posgrams.get(i), ngrams.get(i))) {
 						features = "";
 						// ngrams.get(i) e propozitia intreaga

@@ -8,7 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
@@ -21,13 +23,17 @@ public final class Util {
 	
 	public static final String DUMMY_STRING2 = "The thoracic, artera aorta is broken x3 mg.";
 	
-	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY";
-	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/DUMMY_CON";
-	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/Lemma/lemma.txt";
-	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/Lemma/medicalconcept.arff";
-	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/Lemma/rejected-lemma.txt";
-	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/Lemma/features.txt";
-	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/Lemma/con-procesat.txt";
+	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/ALL_TXT_FILES"; //DUMMY | ALL_TXT_FILES
+	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/ALL_CON_FILES"; //DUMMY_CON | ALL_CON_FILES
+	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/lemma.txt"; //OTHERS_analiza | Lemma
+	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/medicalconcept10.arff"; //OTHERS_analiza | Lemma
+	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/OTHERS_analiza/rejected-lemma.txt"; //OTHERS_analiza | Lemma
+	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/features170.txt"; //OTHERS_analiza | Lemma
+	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/con-procesat.txt"; //OTHERS_analiza | Lemma
+	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/OTHERS_analiza/trainSet170.txt"; //OTHERS_analiza | Lemma 
+	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/OTHERS_analiza/testSet.txt"; //OTHERS_analiza | Lemma 
+	public static final String POS_FILE = "E:/An4/Licenta/DATASET/GATA/POS.txt"; 
+	public static final String CHUNKS_FILE = "E:/An4/Licenta/DATASET/GATA/CHUNKS.txt"; 
 	
 	public static final String SPECIAL_CHARS = "!#$%&'*+,-./:;<=>?@[]^_`{|}~";
 	public static final String NUMBERS = "0123456789";
@@ -73,6 +79,30 @@ public final class Util {
         }
         br.close();
         return lemma;
+	}
+	
+	public static Set<String> getPOSFromFile() throws IOException {
+		Set<String> pos = new HashSet<String>();
+		FileReader fr = new FileReader(POS_FILE);
+		BufferedReader br = new BufferedReader(fr);
+		String CurrentLine;		//read line-by-line
+        while ((CurrentLine = br.readLine()) != null) {
+        	pos.add(CurrentLine);
+        }
+        br.close();
+        return pos;
+	}
+	
+	public static Set<String> getChunksFromFile() throws IOException {
+		Set<String> chunks = new HashSet<String>();
+		FileReader fr = new FileReader(CHUNKS_FILE);
+		BufferedReader br = new BufferedReader(fr);
+		String CurrentLine;		//read line-by-line
+        while ((CurrentLine = br.readLine()) != null) {
+        	chunks.add(CurrentLine);
+        }
+        br.close();
+        return chunks;
 	}
 	
 	public static String getWordWithLRBRRB(String[] tokens, int x) {

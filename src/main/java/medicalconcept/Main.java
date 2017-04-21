@@ -40,7 +40,7 @@ public class Main {
 		//cod pentru citirea tuturor fisierelor si calcularea trasaturilor pentru cuvinte si ngrame
 		File folderTextFiles = new File(Util.RAW_DOCS_PATH);
 		for (final File fileEntry : folderTextFiles.listFiles()) {
-            //System.out.println(fileEntry.getName().toString());
+            System.out.println(fileEntry.getName().toString());
 			//creare buffer reader pentru fisierele text
             FileReader fr = new FileReader(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
@@ -151,9 +151,5 @@ public class Main {
 		return true;
 	}
 	
-
-	
-
-
 }
 
