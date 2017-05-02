@@ -31,7 +31,7 @@ public final class Util {
 	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/features170.txt"; //OTHERS_analiza | Lemma
 	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/con-procesat.txt"; //OTHERS_analiza | Lemma
 	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/OTHERS_analiza/trainSet170.txt"; //OTHERS_analiza | Lemma 
-	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/OTHERS_analiza/testSet.txt"; //OTHERS_analiza | Lemma 
+	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/OTHERS_analiza/testSet258.txt"; //OTHERS_analiza | Lemma 
 	public static final String POS_FILE = "E:/An4/Licenta/DATASET/GATA/POS.txt"; 
 	public static final String CHUNKS_FILE = "E:/An4/Licenta/DATASET/GATA/CHUNKS.txt"; 
 	

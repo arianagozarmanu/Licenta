@@ -27,7 +27,7 @@ public class LiblinearFileGenerator {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 
-		FileWriter fw = new FileWriter(Util.LIBLNR_TEST, false);
+		FileWriter fw = new FileWriter(Util.LIBLNR_TRAIN, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
@@ -41,49 +41,70 @@ public class LiblinearFileGenerator {
 				String[] tokens = currentLine.split("\\s");
 				// transforma un rand de date
 				for (int i = 0; i < tokens.length; i++) {
-					//System.out.println("Count for token " + tokens[i] + " is " + index);
-					if (tokens[i].equals("true")) {
-						//System.out.println("A intrat pe true");
-						row += (index + 1) + ":" + "1" + " ";
-					} else if (i == tokens.length - 1) {
-						//System.out.println("A intrat pe Category");
-						row = getClassIndex(tokens[i]) + " " + row;
-					} else if (i == 32) {
-						//System.out.println("A intrat pe Double");
-						Double val = Double.parseDouble(tokens[i]);
-						if (val != 0) {
-							row += (index + 1) + ":" + val + " ";
-						}
-					} else if (i == 0 || i == 31) {
-						//System.out.println("A intrat pe Integer");
+					if(i == 0) { //lungime cuvant
+						//System.out.println("A intrat pe lungime cuvant");
 						Integer val = Integer.parseInt(tokens[i]);
 						if (val != 0) {
 							row += (index + 1) + ":" + val + " ";
 						}
-					} else if (isTokenCHUNK(tokens[i], chunks) && !tokens[i].equals("false") && !tokens[i].equals("none")) {
+						index++;
+					} else if(i == 31) { //nr. def. WN
+						//System.out.println("A intrat pe nr. def. WN");
+						Integer val = Integer.parseInt(tokens[i]);
+						if (val != 0) {
+							row += (index + 1) + ":" + val + " ";
+						}
+						index++;
+					} else if(i>0 && i <=20) {
+						if (tokens[i].equals("true")) {
+							//System.out.println("A intrat pe true");
+							row += (index + 1) + ":" + "1" + " ";
+						}
+						index++;
+					} else if(i==21) {
+						//System.out.println("A intrat pe POS");
+						// parcurge POS
+						row = setPOSFeatures(row, tokens[i], pos, index);
+						index = index + 44;
+					} else if(i==22) {
 						//System.out.println("A intrat pe CHUNKS");
 						// parcurge CHUNK
 						for (String ch : chunks) {
 							// System.out.println(tokens[i]+"|"+ch);
-							if (tokens[i].toUpperCase().contains(
-									ch.toUpperCase())) {
+							if (tokens[i].toUpperCase().contains(ch.toUpperCase())) {
 								row += (index + 1) + ":" + "1" + " ";
 							}
 							index++;
 						}
-						index--;
-					} else if (isTokenPOS(tokens[i], pos) && !tokens[i].equals("false") && !tokens[i].equals("none")) {
-						//System.out.println("A intrat pe POS");
-						// parcurge POS
+					} else if(i>22 && i<=28) {
+						//System.out.println("A intrat pe POS Before & After");
 						row = setPOSFeatures(row, tokens[i], pos, index);
-						index = index + 43;
-					} else if (!tokens[i].equals("false") && !tokens[i].equals("none")) {
-						//System.out.println("N-a intrat pe POS si Chunks si nu e false sau none");
-						index = index + 43 + 24;
-					}
-				 // we have 25 CHUNKS and 44 POS
-
-					index++;
+						index = index + 44;
+					} else if(i == 29 || i == 30) {
+						//System.out.println("A intrat pe is nrigh.MG sau comma before or after");
+						if (tokens[i].equals("true")) {
+							//System.out.println("A intrat pe true");
+							row += (index + 1) + ":" + "1" + " ";
+						}
+						index++;
+					} else if(i==32) {
+						//System.out.println("A intrat pe TF");
+						Double val = Double.parseDouble(tokens[i]);
+						if (val != 0) {
+							row += (index + 1) + ":" + val + " ";
+						}
+						index++;
+					} else if (i == tokens.length - 1) {
+						//System.out.println("A intrat pe Category");
+						row = getClassIndex(tokens[i]) + " " + row;
+					} else {
+						//System.out.println("A intrat pe lemma features");
+						if (tokens[i].equals("true")) {
+							//System.out.println("A intrat pe true");
+							row += (index + 1) + ":" + "1" + " ";
+						}
+						index++;
+					} 
 				}
 				out.println(row);
 			}
@@ -125,27 +146,6 @@ public class LiblinearFileGenerator {
 			return "3";
 
 		return "0";
-	}
-
-	private static Boolean isTokenCHUNK(String str, Set<String> chunks) {
-
-		for (String ch : chunks) {
-			//System.out.println(str+"|"+ch);
-			if (str.toUpperCase().contains(ch.toUpperCase())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static Boolean isTokenPOS(String str, Set<String> pos) {
-		
-		for (String ps : pos) {
-			if (str.toUpperCase().contains(ps.toUpperCase())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

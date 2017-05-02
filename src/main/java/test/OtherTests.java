@@ -3,7 +3,6 @@ package test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -110,7 +109,7 @@ public class OtherTests {
 	 * @throws IOException
 	 */
 	public static void testFeaturesFile() throws IOException {
-		FileReader fr = new FileReader(Util.FEATURES_FILE_AUX);
+		FileReader fr = new FileReader(Util.FEATURES_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String CurrentLine; // read line-by-line
 		int count = 1;
@@ -135,24 +134,6 @@ public class OtherTests {
 					+ first + " la linia " + (count - 1));
 		}
 		br.close();
-	}
-	
-	public static void deleteLastInstanceFromFile() throws IOException {
-		FileReader fr = new FileReader(Util.FEATURES_FILE);
-		BufferedReader br = new BufferedReader(fr);
-		String CurrentLine; // read line-by-line
-		
-		FileWriter fw = new FileWriter(Util.FEATURES_FILE_AUX, true);
-		BufferedWriter bw = new BufferedWriter(fw);
-		PrintWriter out = new PrintWriter(bw);
-		
-		int count = 1;
-		while ((CurrentLine = br.readLine()) != null && count < 390472 ) {
-			out.println(CurrentLine);
-			count++;
-		}
-		br.close();
-		out.close();
 	}
 	
 	
