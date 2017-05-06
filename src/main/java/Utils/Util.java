@@ -1,4 +1,4 @@
-package medicalconcept;
+package Utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import medicalconcept.Concept;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
@@ -28,12 +30,29 @@ public final class Util {
 	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/lemma.txt"; //OTHERS_analiza | Lemma
 	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/medicalconcept10.arff"; //OTHERS_analiza | Lemma
 	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/OTHERS_analiza/rejected-lemma.txt"; //OTHERS_analiza | Lemma
-	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/features170.txt"; //OTHERS_analiza | Lemma
+	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/features256v2.txt"; //OTHERS_analiza | Lemma
 	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/con-procesat.txt"; //OTHERS_analiza | Lemma
-	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/OTHERS_analiza/trainSet170.txt"; //OTHERS_analiza | Lemma 
-	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/OTHERS_analiza/testSet258.txt"; //OTHERS_analiza | Lemma 
+	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170TOATEwCHNKSv2.txt"; //OTHERS_analiza | Lemma | GATA
+	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/GATA/testSet256TOATEwCHNKSv2.txt"; //OTHERS_analiza | Lemma 
+	public static final String LIBLNR_OUT = "E:/An4/Licenta/DATASET/GATA/OUT/outPosChnksFilterNrWordsNonWNC1E03X01W0_0_25.txt";
 	public static final String POS_FILE = "E:/An4/Licenta/DATASET/GATA/POS.txt"; 
 	public static final String CHUNKS_FILE = "E:/An4/Licenta/DATASET/GATA/CHUNKS.txt"; 
+	public static final String LIBLNR_NO_LEMMA_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170faraLemma.txt";
+	public static final String LIBLNR_NO_LEMMA_TEST = "E:/An4/Licenta/DATASET/GATA/testSet258faraLemma.txt"; 
+	public static final String POS_USED_FOR_MEDICAL_CONCEPT = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUsedForMedicalConcepts.txt";
+	public static final String POS_USED_FOR_NONMEDICAL_CONCEPT = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUsedForNonMedicalConcepts.txt";
+	public static final String CHUNKS_USED_FOR_MED_CONC = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUsedForMedicalConcepts.txt";
+	public static final String CHUNKS_USED_FOR_NONMED_CONC = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUsedForNonMedicalConcepts.txt";
+	public static final String DUMMY_FILE = "E:/An4/Licenta/DATASET/GATA/features97.txt"; //OTHERS_analiza | Lemma
+	public static final String DUMMY_FILE_TRAIN = "E:/An4/Licenta/DATASET/GATA/train97cuLemmaCUpos.txt"; //OTHERS_analiza | Lemma
+	public static final String POS2_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/2POSUnusedForMedicalConcepts.txt";
+	public static final String POS3_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/3POSUnusedForMedicalConcepts.txt";
+	public static final String POS4_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUnusedForMedicalConcepts.txt";
+	public static final String POS5_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/5POSUnusedForMedicalConcepts.txt";
+	public static final String CHNK5_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/ChunksUnusedForMedicalConcepts.txt";
+	public static final String CHNK1_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUnusedForMedicalConcepts.txt";
+	public static final String SHORTER_FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/features170faraPOS.txt"; //OTHERS_analiza | Lemma
+	public static final String LIBLNR_OUT_WITH_NR_OF_WORDS = "E:/An4/Licenta/DATASET/GATA/trainSet170cuNrOfWords.txt"; //OTHERS_analiza | Lemma | GATA
 	
 	public static final String SPECIAL_CHARS = "!#$%&'*+,-./:;<=>?@[]^_`{|}~";
 	public static final String NUMBERS = "0123456789";

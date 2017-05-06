@@ -3,7 +3,6 @@ package features;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import medicalconcept.Util;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
@@ -13,6 +12,8 @@ import net.didion.jwnl.dictionary.Dictionary;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
+
+import Utils.Util;
 
 public class NgramContextualFeatures {
 

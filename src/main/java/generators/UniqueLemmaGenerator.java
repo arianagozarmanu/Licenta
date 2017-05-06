@@ -15,14 +15,13 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import medicalconcept.MapUtil;
-import medicalconcept.Util;
-
 import org.clulab.processors.Document;
 import org.clulab.processors.Processor;
 import org.clulab.processors.Sentence;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
+import Utils.MapUtil;
+import Utils.Util;
 import features.ContextualFeatures;
 
 public class UniqueLemmaGenerator {

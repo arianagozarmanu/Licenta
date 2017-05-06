@@ -1,6 +1,6 @@
 package features;
 
-import medicalconcept.Util;
+import Utils.Util;
 
 public class NgramSintacticFeatures {
 

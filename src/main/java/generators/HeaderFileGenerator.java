@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import medicalconcept.Util;
+import Utils.Util;
 import net.didion.jwnl.JWNLException;
 
 public class HeaderFileGenerator {

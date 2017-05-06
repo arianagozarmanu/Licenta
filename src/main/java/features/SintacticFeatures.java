@@ -1,9 +1,9 @@
 package features;
 
-import medicalconcept.Util;
-
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
+
+import Utils.Util;
 /**
  * Methods: 
  * - POS for current and 2 neighbours before and after

@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import medicalconcept.Util;
+import Utils.Util;
 
 /**
  * Clase: none = 0, test = 1, treatment = 2, problem = 3 
@@ -23,11 +23,11 @@ public class LiblinearFileGenerator {
 		Set<String> pos = Util.getPOSFromFile();
 		Set<String> chunks = Util.getChunksFromFile();
 
-		FileReader fr = new FileReader(Util.FEATURES_FILE);
+		FileReader fr = new FileReader(Util.DUMMY_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 
-		FileWriter fw = new FileWriter(Util.LIBLNR_TRAIN, false);
+		FileWriter fw = new FileWriter(Util.DUMMY_FILE_TRAIN, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 

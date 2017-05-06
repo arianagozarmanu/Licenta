@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import Utils.Util;
 import medicalconcept.Concept;
-import medicalconcept.Util;
 
 public class ConceptLengthHistogramGenerator {
 	

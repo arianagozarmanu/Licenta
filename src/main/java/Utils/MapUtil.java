@@ -1,4 +1,4 @@
-package medicalconcept;
+package Utils;
 
 import java.util.*;
 

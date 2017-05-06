@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import medicalconcept.Util;
+import Utils.Util;
 import weka.core.Attribute;
 import weka.core.Instances;
 
