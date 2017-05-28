@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import Utils.Util;
+import utils.GeneralUtils;
 import weka.core.Attribute;
 import weka.core.Instances;
 
@@ -67,7 +67,7 @@ public class ArffFileGeneratorV2 {
 		atts.add(new Attribute("NrDefInWordNet"));
 		atts.add(new Attribute("TermFrequency"));
 		//nominal	-- fiecare lemma unica e un atribut nominal
-		List<String> lemmaFeature = Util.getLemmaFromFile();
+		List<String> lemmaFeature = GeneralUtils.getLemmaFromFile();
 		for(String lemma : lemmaFeature) {
 			atts.add(new Attribute(lemma, attValsBool));
 		}
@@ -81,14 +81,14 @@ public class ArffFileGeneratorV2 {
 		//2. create Instances object
 		data = new Instances("MedicalConcepts", atts, 0);
 		
-		FileWriter fw = new FileWriter(Util.ARFF_FILE, false);
+		FileWriter fw = new FileWriter(GeneralUtils.ARFF_FILE, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
 		out.println(data);
 		
 		//3. fill with data
-		FileReader fr = new FileReader(Util.FEATURES_FILE);
+		FileReader fr = new FileReader(GeneralUtils.FEATURES_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 		int count = 0;

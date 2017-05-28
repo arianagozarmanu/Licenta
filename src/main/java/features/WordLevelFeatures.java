@@ -2,7 +2,7 @@ package features;
 
 import org.clulab.processors.*;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 /**
  * Methods:
@@ -45,7 +45,7 @@ public class WordLevelFeatures {
 	public void showWordLevelFeatures(Document doc) {
 		
 		for (Sentence sentence : doc.sentences()) {
-			String token = Util.mkString(sentence.words(), " ");
+			String token = GeneralUtils.mkString(sentence.words(), " ");
 			String[] result = token.split("\\s");
 			for (int x=0; x<result.length; x++) {
 				System.out.print(result[x] + "\t");
@@ -154,13 +154,13 @@ public class WordLevelFeatures {
 	
 	public String containsSpecialCharBefore(int x, Sentence sentence) {
 
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-1].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -170,13 +170,13 @@ public class WordLevelFeatures {
 	}
 	
 	public String containsSpecialCharBefBef(int x, Sentence sentence) {
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0 || x == 1) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-2].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -188,13 +188,13 @@ public class WordLevelFeatures {
 	
 	public String containsSpecialCharBefBefBef(int x, Sentence sentence) {
 
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == 0 || x == 1 || x == 2) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x-3].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -205,13 +205,13 @@ public class WordLevelFeatures {
 	
 	public String containsSpecialCharAfter(int x, Sentence sentence) {
 
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+1].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -222,13 +222,13 @@ public class WordLevelFeatures {
 	
 	public String containsSpecialCharAftAft(int x, Sentence sentence) {
 
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1 || x == token.length-2) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+2].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -239,13 +239,13 @@ public class WordLevelFeatures {
 	
 	public String containsSpecialCharAftAftAft(int x, Sentence sentence) {
 		
-		String[] token = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] token = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		if( x == token.length-1 || x == token.length-2 || x == token.length-3) {
 			return "false" + "\t";
 		} else {
 			String splitToken[] = token[x+3].split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}

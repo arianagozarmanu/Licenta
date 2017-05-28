@@ -1,13 +1,13 @@
 package features;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 public class NgramSintacticFeatures {
 
 	public String getNgramSintacticFeatures(String[] wholeString, String[] wholePOS, String[] ngram, String[] pos, String[] chunk) {
 		String result = "";
-		result = Util.concatenateWithUnderscore(pos) + "\t"
-				+ Util.concatenateWithUnderscore(chunk) + "\t"
+		result = GeneralUtils.concatenateWithUnderscore(pos) + "\t"
+				+ GeneralUtils.concatenateWithUnderscore(chunk) + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 1, "before") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 2, "before") + "\t"
 				+ getPosBeforeOrAfter(wholeString, wholePOS, ngram, 3, "before") + "\t"

@@ -38,8 +38,8 @@ public class FinalResultsGenerator {
 		confMatrix.put(2, hmap2);
 		confMatrix.put(3, hmap3);
 		
-		BufferedReader brTest = new BufferedReader(new FileReader(Utils.Util.LIBLNR_TEST));
-		BufferedReader brOut = new BufferedReader(new FileReader(Utils.Util.LIBLNR_OUT));
+		BufferedReader brTest = new BufferedReader(new FileReader(utils.GeneralUtils.LIBLNR_TEST));
+		BufferedReader brOut = new BufferedReader(new FileReader(utils.GeneralUtils.LIBLNR_OUT));
 		
 		String currentLineTest;
 		String currentLineOut;

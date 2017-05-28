@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import Utils.Util;
+import utils.GeneralUtils;
 import medicalconcept.Concept;
 
 public class ConceptLengthHistogramGenerator {
@@ -38,7 +38,7 @@ public class ConceptLengthHistogramGenerator {
 		int nrOfWords = 0;
 		int value = 0;
 		for (File fileEntry : folderTextFiles.listFiles()) {
-			 conObjects = Util.takeConObjectsIntoList(fileEntry);
+			 conObjects = GeneralUtils.takeConObjectsIntoList(fileEntry);
 			 for(Concept concept: conObjects) {
 				 nrOfWords = concept.getName().split("\\s").length;
 				 //System.out.println(nrOfWords + concept.getName());

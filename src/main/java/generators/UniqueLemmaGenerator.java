@@ -20,8 +20,8 @@ import org.clulab.processors.Processor;
 import org.clulab.processors.Sentence;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
-import Utils.MapUtil;
-import Utils.Util;
+import utils.GeneralUtils;
+import utils.MapUtil;
 import features.ContextualFeatures;
 
 public class UniqueLemmaGenerator {
@@ -33,9 +33,9 @@ public class UniqueLemmaGenerator {
 		Processor proc = new CoreNLPProcessor(true, false, 0, 100); 
 		
 		//creare fisier cu lemma
-		File folder = new File(Util.RAW_DOCS_PATH);
-		PrintWriter writer = new PrintWriter(Util.LEMMA_OUT_FILE, "UTF-8");
-		PrintWriter rejected = new PrintWriter(Util.REJECTED_WORDS, "UTF-8");
+		File folder = new File(GeneralUtils.RAW_DOCS_PATH);
+		PrintWriter writer = new PrintWriter(GeneralUtils.LEMMA_OUT_FILE, "UTF-8");
+		PrintWriter rejected = new PrintWriter(GeneralUtils.REJECTED_WORDS, "UTF-8");
 		
 		//preluare lemma unic
 		Set<String> uniqueLemma = new HashSet<String>();
@@ -45,7 +45,7 @@ public class UniqueLemmaGenerator {
 		
 		for (final File fileEntry : folder.listFiles()) {
             System.out.println(fileEntry.getName().toString());
-            FileReader fr = new FileReader(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
+            FileReader fr = new FileReader(GeneralUtils.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
             
             //creare fisier analiza lemma conform TF ------------------------ start declaratii analiza
@@ -71,7 +71,7 @@ public class UniqueLemmaGenerator {
             		String[] pos = sentence.tags().get();
             		for(int i=0 ; i < lemma.length ; i++) {
             			if(notSpCharAndNotNeededPos(lemma[i], pos[i])) {
-            				String word = Util.getWordWithLRBRRB(lemma, i);
+            				String word = GeneralUtils.getWordWithLRBRRB(lemma, i);
             				//pt ca sentence.words() face ca ( si ) sa fie LRB si RRB
             				if(word.contains("(")) {
             					i = i+3;
@@ -116,10 +116,10 @@ public class UniqueLemmaGenerator {
 		
 		//verificare daca contine lemma caracter special sau numar
 		for (int i = 0; i < lemma.length(); i++) {
-			if(Util.SPECIAL_CHARS.contains(""+lemma.charAt(i))) {
+			if(GeneralUtils.SPECIAL_CHARS.contains(""+lemma.charAt(i))) {
 				return false;
 			}
-			if(Util.NUMBERS.contains(""+lemma.charAt(i))) {
+			if(GeneralUtils.NUMBERS.contains(""+lemma.charAt(i))) {
 				return false;
 			}
 		}

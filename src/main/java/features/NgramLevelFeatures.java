@@ -1,6 +1,6 @@
 package features;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 
 public class NgramLevelFeatures {
@@ -118,7 +118,7 @@ public class NgramLevelFeatures {
 		} else {
 			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -135,7 +135,7 @@ public class NgramLevelFeatures {
 		} else {
 			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -153,7 +153,7 @@ public class NgramLevelFeatures {
 			} else {
 				String splitToken[] = wordBefore.split("");
 				for (int i = 0; i < splitToken.length; i++) {
-					if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 						return "true" + "\t";
 					}
 				}
@@ -170,7 +170,7 @@ public class NgramLevelFeatures {
 		} else {
 			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -187,7 +187,7 @@ public class NgramLevelFeatures {
 		} else {
 			String splitToken[] = wordBefore.split("");
 			for (int i = 0; i < splitToken.length; i++) {
-				if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+				if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 					return "true" + "\t";
 				}
 			}
@@ -205,7 +205,7 @@ public class NgramLevelFeatures {
 			} else {
 				String splitToken[] = wordBefore.split("");
 				for (int i = 0; i < splitToken.length; i++) {
-					if (Util.SPECIAL_CHARS.contains(splitToken[i])) {
+					if (GeneralUtils.SPECIAL_CHARS.contains(splitToken[i])) {
 						return "true" + "\t";
 					}
 				}

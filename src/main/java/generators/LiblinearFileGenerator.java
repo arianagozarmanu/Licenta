@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 /**
  * Clase: none = 0, test = 1, treatment = 2, problem = 3 
@@ -20,14 +20,14 @@ public class LiblinearFileGenerator {
 
 	public static void main(String[] args) throws Exception {
 
-		Set<String> pos = Util.getPOSFromFile();
-		Set<String> chunks = Util.getChunksFromFile();
+		Set<String> pos = GeneralUtils.getPOSFromFile();
+		Set<String> chunks = GeneralUtils.getChunksFromFile();
 
-		FileReader fr = new FileReader(Util.DUMMY_FILE);
+		FileReader fr = new FileReader(GeneralUtils.DUMMY_FILE);
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 
-		FileWriter fw = new FileWriter(Util.DUMMY_FILE_TRAIN, false);
+		FileWriter fw = new FileWriter(GeneralUtils.DUMMY_FILE_TRAIN, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 

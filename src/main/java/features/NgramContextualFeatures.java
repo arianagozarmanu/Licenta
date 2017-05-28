@@ -13,7 +13,7 @@ import net.didion.jwnl.dictionary.Dictionary;
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 public class NgramContextualFeatures {
 
@@ -49,8 +49,8 @@ public class NgramContextualFeatures {
 		String result = "";
 		String concatStr = "";
 		for (Sentence sentence : doc.sentences()) {
-			result = Util.concatenateString(sentence.words());
-			concatStr = Util.concatenateString(word.split("\\s"));
+			result = GeneralUtils.concatenateString(sentence.words());
+			concatStr = GeneralUtils.concatenateString(word.split("\\s"));
 			//System.out.println(result+"|"+concatStr);
 			if (result.toLowerCase().contains(concatStr.toLowerCase())) {
 				counter++;

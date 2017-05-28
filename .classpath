@@ -33,5 +33,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/An4/Licenta/workspace/jwnl14-rc2/jwnl.jar"/>
+	<classpathentry kind="lib" path="E:/An4/Licenta/workspace/medicalconcept/javaml-0.1.7/javaml-0.1.7.jar"/>
+	<classpathentry kind="lib" path="E:/An4/Licenta/workspace/medicalconcept/javaml-0.1.7/lib/ajt-2.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

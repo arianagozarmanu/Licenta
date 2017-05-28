@@ -13,13 +13,13 @@ import net.didion.jwnl.dictionary.Dictionary;
 import org.clulab.processors.Sentence;
 import org.clulab.processors.Document;
 
-import Utils.Util;
+import utils.GeneralUtils;
 
 public class ContextualFeatures {
 
 	public String getContextualFeatures(int index, String token, Sentence sentence, Document doc) throws FileNotFoundException, JWNLException {
 		String result = "";
-		String[] tokens = Util.mkString(sentence.words(), " ").split("\\s");
+		String[] tokens = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 		result = isSecondNeighborMG(index, tokens) + "\t"
 				+ hasCommaBeforeOrAfter(index, tokens) + "\t"
 				+ getNrOfDefinitionsInWordNet(token) + "\t"
@@ -30,7 +30,7 @@ public class ContextualFeatures {
 	
 	public void showContextualFeatures(Document doc, Document[] docs) throws FileNotFoundException, JWNLException {
 		for (Sentence sentence : doc.sentences()) {
-			String[] result = Util.mkString(sentence.words(), " ").split("\\s");
+			String[] result = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 			for (int x = 0; x < result.length; x++) {
 				System.out.print(result[x] + "\t\t"
 						+ isSecondNeighborMG(x, result) + "\t\t"
@@ -75,7 +75,7 @@ public class ContextualFeatures {
 		int docLength = 0;
 		String[] result = null;
 		for (Sentence sentence : doc.sentences()) {
-			result = Util.mkString(sentence.words(), " ").split("\\s");
+			result = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
 			for (int x = 0; x < result.length; x++) {
 				if (word.toLowerCase().equals(result[x].toLowerCase())) {
 					counter++;
@@ -131,7 +131,7 @@ public class ContextualFeatures {
 		for (Document doc : docs) {
 			isNotInDoc = true;
 			for (Sentence sentence : doc.sentences()) {
-				String[] result = Util.mkString(sentence.words(), " ").split(
+				String[] result = GeneralUtils.mkString(sentence.words(), " ").split(
 						"\\s");
 				for (int x = 0; x < result.length && isNotInDoc; x++) {
 					if (word.toLowerCase().equals(result[x].toLowerCase())) {

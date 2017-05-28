@@ -10,7 +10,7 @@ import net.didion.jwnl.JWNLException;
 import org.clulab.processors.*;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
-import Utils.Util;
+import utils.GeneralUtils;
 import features.ContextualFeatures;
 import features.SintacticFeatures;
 import features.WordLevelFeatures;
@@ -25,13 +25,13 @@ public class Main {
 		SintacticFeatures sf = new SintacticFeatures();
 		ContextualFeatures cf = new ContextualFeatures();
 		
-		NGramGenAndFeatCalc ngrams = new NGramGenAndFeatCalc();
+		NGramFeaturesCalculator ngrams = new NGramFeaturesCalculator();
 		
 		//preluare LEMMA generate pentru toate documentele existente
-		List<String> lemmaFeature = Util.getLemmaFromFile();
+		List<String> lemmaFeature = GeneralUtils.getLemmaFromFile();
 		
 		//deschidere fisier pentru scriere trasaturi
-		FileWriter fw = new FileWriter(Util.FEATURES_FILE, true);
+		FileWriter fw = new FileWriter(GeneralUtils.FEATURES_FILE, true);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
@@ -39,19 +39,19 @@ public class Main {
 		String features;
 		
 		//cod pentru citirea tuturor fisierelor si calcularea trasaturilor pentru cuvinte si ngrame
-		File folderTextFiles = new File(Util.RAW_DOCS_PATH);
+		File folderTextFiles = new File(GeneralUtils.RAW_DOCS_PATH);
 		for (final File fileEntry : folderTextFiles.listFiles()) {
             System.out.println(fileEntry.getName().toString());
 			//creare buffer reader pentru fisierele text
-            FileReader fr = new FileReader(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
+            FileReader fr = new FileReader(GeneralUtils.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
             
             //creare lista de obiecte din fisierele .con pentru preluare categorie
             List<Concept> conObjects = new ArrayList<Concept>();
-            conObjects = Util.takeConObjectsIntoList(fileEntry);
+            conObjects = GeneralUtils.takeConObjectsIntoList(fileEntry);
             
             //creare doc cu fisierul intreg pentru TF
-            Scanner scanner = new Scanner(new File(Util.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
+            Scanner scanner = new Scanner(new File(GeneralUtils.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
             String text = scanner.useDelimiter("\\A").next();
             Document totalDOC = proc.annotate(text, false);
             scanner.close();
@@ -59,7 +59,7 @@ public class Main {
             while ((currentLine = br.readLine()) != null) {
             	Document doc = proc.annotate(currentLine, false); //unele linii din fisier au cate 2 sau mai multe propozitii
             	for (Sentence sentence : doc.sentences()) {	
-            		String[] tokens = Util.mkString(sentence.words(), " ").split("\\s");
+            		String[] tokens = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
             		String[] pos = sentence.tags().get();
             		String[] lemmas = sentence.lemmas().get();
             		
@@ -74,8 +74,8 @@ public class Main {
             		for (int x=0; x<tokens.length; x++) {
             			if(tokenToTake(tokens[x], pos[x])) {
             				//pentru ca sentence.words() face ca ( si ) sa fie LRB si RRB
-            				String word = Util.getWordWithLRBRRB(tokens, x);
-            				String lemma = Util.getWordWithLRBRRB(lemmas, x);
+            				String word = GeneralUtils.getWordWithLRBRRB(tokens, x);
+            				String lemma = GeneralUtils.getWordWithLRBRRB(lemmas, x);
             				if(word.contains("(")){	
             					x = x+3;
             				} 
@@ -86,10 +86,10 @@ public class Main {
 		            		features += cf.getContextualFeatures(x, word, sentence, totalDOC);
 		            		
 		            		//adaugare features lemma cuvintelor
-		            		features = Util.setLemmaFeature(lemmaFeature, features, lemma);
+		            		features = GeneralUtils.setLemmaFeature(lemmaFeature, features, lemma);
 		            		
 		            		//adaugare categorie
-		            		features = Util.setCategory(conObjects, features, word);
+		            		features = GeneralUtils.setCategory(conObjects, features, word);
 		            		
 		            		out.println(features);
             			} 
@@ -109,7 +109,7 @@ public class Main {
 		//verificare daca tokenul e caracter special sau numar
 		Boolean notOK = true;
 		for (int i = 0; i < token.length() && notOK; i++) {
-			if(!Util.SPECIAL_CHARS.contains("" + token.charAt(i))) {
+			if(!GeneralUtils.SPECIAL_CHARS.contains("" + token.charAt(i))) {
 				notOK = false;
 			}
 		}
@@ -117,7 +117,7 @@ public class Main {
 		
 		notOK = true;
 		for (int i = 0; i < token.length() && notOK; i++) {
-			if(!Util.NUMBERS.contains("" + token.charAt(i))) {
+			if(!GeneralUtils.NUMBERS.contains("" + token.charAt(i))) {
 				notOK = false;
 			}
 		}
