@@ -1,19 +1,12 @@
 package generators;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.clulab.processors.Document;
 import org.clulab.processors.Processor;
@@ -21,8 +14,6 @@ import org.clulab.processors.Sentence;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
 import utils.GeneralUtils;
-import utils.MapUtil;
-import features.ContextualFeatures;
 
 public class UniqueLemmaGenerator {
 	
@@ -66,7 +57,6 @@ public class UniqueLemmaGenerator {
             while ((CurrentLine = br.readLine()) != null) {
             	Document doc = proc.annotate(CurrentLine, false);
             	for (Sentence sentence : doc.sentences()) {
-            		String[] token = sentence.words();
             		String[] lemma = sentence.lemmas().get();
             		String[] pos = sentence.tags().get();
             		for(int i=0 ; i < lemma.length ; i++) {

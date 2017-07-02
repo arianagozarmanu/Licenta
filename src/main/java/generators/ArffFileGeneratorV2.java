@@ -19,7 +19,6 @@ public class ArffFileGeneratorV2 {
 		ArrayList<String> attValsBool;
 		ArrayList<String> attValsCat;
 		Instances data;
-		double[] vals;
 		
 		//nu punem si numele conceptului, nu? Numai trasaturile calculate
 		

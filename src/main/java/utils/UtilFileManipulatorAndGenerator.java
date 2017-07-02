@@ -2,7 +2,6 @@ package utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class UtilFileManipulatorAndGenerator {
 		// GeneralUtils.LIBLNR_NO_LEMMA_TEST);
 		// getElementsFromAFileMinusElementsFromAnother();
 		// getShorterFeatureFileWithoutPOS();
-		// getFeaturesWithoutLemma();
+		 getFeaturesWithoutLemma();
 		 deleteFeaturesSelected(GeneralUtils.LIBLNR_TRAIN, GeneralUtils.TRAIN_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED);
 		// deleteFeaturesUnselected(GeneralUtils.LIBLNR_TEST, GeneralUtils.TEST_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED_TO_TAKE);
 		// getFirstNFeatureIndex(100, GeneralUtils.FEATURE_SCORING, GeneralUtils.FETURES_FILTERED_TO_TAKE);

@@ -23,8 +23,8 @@ public class SubsetFeatureSelector {
 	
 	public static void main(String[] args) throws IOException{
 		Dataset data = FileHandler.loadDataset(new File(utils.GeneralUtils.CSV_WITHOUT_LEMMA), 4, ",");
-		//getFirstNFeatures(10, data);
-		//getFeatureScoring(data);
+		getFirstNFeatures(10, data);
+		getFeatureScoring(data);
 		getFeatureRanking(data);
 
 	}
