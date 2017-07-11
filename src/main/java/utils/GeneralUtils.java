@@ -30,11 +30,11 @@ public final class GeneralUtils {
 	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/lemma.txt"; //OTHERS_analiza | Lemma
 	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/medicalconcept10.arff"; //OTHERS_analiza | Lemma
 	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/OTHERS_analiza/rejected-lemma.txt"; //OTHERS_analiza | Lemma
-	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/trainSet170LemmaPosChnkFilterNrWdsNoWN.txt"; //OTHERS_analiza | Lemma
+	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/DummyTest2.txt"; //OTHERS_analiza | Lemma
 	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/con-procesat.txt"; //OTHERS_analiza | Lemma
 	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170LemmaPosChnkFilterNrWdsNoWN.txt"; //OTHERS_analiza | Lemma | GATA
-	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/GATA/testSet256LemmaPosChnkFilterNrWdsNoWN.txt"; //OTHERS_analiza | Lemma 
-	public static final String LIBLNR_OUT = "E:/An4/Licenta/DATASET/GATA/OUT/outFeatureSelectionScoring";
+	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/GATA/testSet256TOATEwCHNKSv2.txt"; //OTHERS_analiza | Lemma //testSet256TOATEwCHNKSv2.txt
+	public static final String LIBLNR_OUT = "E:/An4/Licenta/DATASET/GATA/OUT/outAnaliza2";
 	public static final String POS_FILE = "E:/An4/Licenta/DATASET/GATA/POS.txt"; 
 	public static final String CHUNKS_FILE = "E:/An4/Licenta/DATASET/GATA/CHUNKS.txt"; 
 	public static final String LIBLNR_NO_LEMMA_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170faraLemma.txt";

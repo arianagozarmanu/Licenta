@@ -22,10 +22,27 @@ public class UtilFileManipulatorAndGenerator {
 		// GeneralUtils.LIBLNR_NO_LEMMA_TEST);
 		// getElementsFromAFileMinusElementsFromAnother();
 		// getShorterFeatureFileWithoutPOS();
-		 getFeaturesWithoutLemma();
-		 deleteFeaturesSelected(GeneralUtils.LIBLNR_TRAIN, GeneralUtils.TRAIN_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED);
+		 //getFeaturesWithoutLemma();
+		deleteFeaturesSelected(GeneralUtils.LIBLNR_TRAIN, GeneralUtils.TRAIN_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED);
 		// deleteFeaturesUnselected(GeneralUtils.LIBLNR_TEST, GeneralUtils.TEST_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED_TO_TAKE);
 		// getFirstNFeatureIndex(100, GeneralUtils.FEATURE_SCORING, GeneralUtils.FETURES_FILTERED_TO_TAKE);
+		 //addFeaturesIndexInFileFromStartPoint(GeneralUtils.FETURES_FILTERED, GeneralUtils.NR_OF_INSTANCES_WITHOUT_LEMMA);
+	}
+	
+	public static void addFeaturesIndexInFileFromStartPoint(String file, int start) throws IOException {
+		FileWriter fw = new FileWriter(file, true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter out = new PrintWriter(bw);
+		
+		out.println();
+		
+		for(int i = (start + 1); i < GeneralUtils.NR_OF_INSTANCES_IN_ROW; i++) {
+			out.println(i);
+		}
+		bw.close();
+		out.close();
+		
+		System.out.println("Write stoped.");
 	}
 	
 	public static void getFirstNFeatureIndex(int n, String fileIN, String fileOUT) throws IOException {
@@ -103,7 +120,7 @@ public class UtilFileManipulatorAndGenerator {
 		br.close();
 		out.close();
 		
-		System.out.println("File Generated!");
+		System.out.println("File Generated! " + fileOUT);
 	}
 	
 	public static void deleteFeaturesUnselected(String fileIN, String fileOUT, String toTakeFeatures) throws IOException {

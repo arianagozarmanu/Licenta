@@ -28,7 +28,7 @@ public class LiblinearFileGeneratorWithUndersampling {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine;
 
-		FileWriter fw = new FileWriter(GeneralUtils.LIBLNR_TRAIN, false);
+		FileWriter fw = new FileWriter(GeneralUtils.LIBLNR_TEST, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		

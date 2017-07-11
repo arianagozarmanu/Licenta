@@ -20,7 +20,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 public class FinalResultsGenerator {
 
-	private static final String FINAL_RESULTS_FILEPATH = "src/main/resources/FinalResults.xlsx";
+	private static final String FINAL_RESULTS_FILEPATH = "src/main/resources/ResultsStaticSet.xlsx";
 
 	private static HashMap<Integer, Double> precision = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> recall = new HashMap<Integer, Double>();
@@ -90,7 +90,7 @@ public class FinalResultsGenerator {
 		confMatrix.put(3, hmap3);
 
 		BufferedReader brTest = new BufferedReader(new FileReader(
-				utils.GeneralUtils.LIBLNR_TEST));
+				utils.GeneralUtils.TEST_FEATURES_FILTERED));
 		BufferedReader brOut = new BufferedReader(new FileReader(
 				utils.GeneralUtils.LIBLNR_OUT));
 

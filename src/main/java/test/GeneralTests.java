@@ -3,6 +3,7 @@ package test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,7 +35,8 @@ public class GeneralTests {
 		// testNChunksUsedForConcepts(5);
 		// testCunksUsedForConcepts();
 		// testCunksUsedForNonConcepts();
-		getNrOfTokensSplitBySpaceOnRow(GeneralUtils.CSV_WITHOUT_LEMMA, ",");
+		//getNrOfTokensSplitBySpaceOnRow(GeneralUtils.CSV_WITHOUT_LEMMA, ",");
+		getNumberOfConceptfFromFiles(GeneralUtils.RAW_CON_DOCS_PATH);
 	}
 
 	public static void testCunksUsedForConcepts() throws IOException {
@@ -544,6 +546,27 @@ public class GeneralTests {
 		System.out.println("Number of instances = "
 				+ CurrentLine.split(splitter).length);
 		br.close();
+	}
+	
+	/**
+	 * Get the nr. of concepts from .con files 
+	 * There is one concept/line
+	 * @param path to folder (with .con files)
+	 * @throws IOException
+	 */
+	public static void getNumberOfConceptfFromFiles(String path) throws IOException {
+		File folderTextFiles = new File(path);
+		int count = 0;
+		String currentLine;
+		for (final File fileEntry : folderTextFiles.listFiles()) {
+			FileReader fr = new FileReader(path + "/" + fileEntry.getName().toString());
+			BufferedReader br = new BufferedReader(fr);
+			while ((currentLine = br.readLine()) != null) {
+				count++;
+			}
+			br.close();
+		}
+		System.out.println("Number of lines:" + count);
 	}
 
 }
