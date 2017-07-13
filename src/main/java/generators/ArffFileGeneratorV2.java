@@ -12,6 +12,13 @@ import utils.GeneralUtils;
 import weka.core.Attribute;
 import weka.core.Instances;
 
+/**
+ * ARFF file generator from general file computed in {@link /medicalconcept/src/main/java/medicalconcept/Main.java}
+ * it transforms comma and quote mark characters in String because ARFF files not support these special char.
+ * {warning} use weka library functions
+ * @author Ariana
+ *
+ */
 public class ArffFileGeneratorV2 {
 
 	public static void main(String[] args) throws Exception {
@@ -19,8 +26,6 @@ public class ArffFileGeneratorV2 {
 		ArrayList<String> attValsBool;
 		ArrayList<String> attValsCat;
 		Instances data;
-		
-		//nu punem si numele conceptului, nu? Numai trasaturile calculate
 		
 		//1. set up Attributes
 		atts = new ArrayList<Attribute>();
@@ -65,7 +70,7 @@ public class ArffFileGeneratorV2 {
 		//numeric
 		atts.add(new Attribute("NrDefInWordNet"));
 		atts.add(new Attribute("TermFrequency"));
-		//nominal	-- fiecare lemma unica e un atribut nominal
+		//nominal	
 		List<String> lemmaFeature = GeneralUtils.getLemmaFromFile();
 		for(String lemma : lemmaFeature) {
 			atts.add(new Attribute(lemma, attValsBool));
@@ -97,9 +102,7 @@ public class ArffFileGeneratorV2 {
 				int tokensLength = tokens.length;
 				String instances = "";
 				for (int i = 0; i < tokensLength; i++) {
-					// inlocuieste ',' de la POS deoarece ARFF 
-					// are ca si separator ',' si e conflict
-					tokens[i] = changeIntoComma(tokens[i]);
+					tokens[i] = changeSpCharsIntoString(tokens[i]);
 					if (i == tokensLength - 1) {
 						instances += tokens[i];
 					} else {
@@ -118,18 +121,14 @@ public class ArffFileGeneratorV2 {
 
 	}
 	
-	private static String changeIntoComma(String str) {
+	private static String changeSpCharsIntoString(String str) {
 		String rez = str;
 		if(str.contains(",")) {
-			//System.out.println(str);
 			rez = str.replace(",", "comma");
-			//System.out.println(rez);
 		}
 		String next = rez;
 		if(str.contains("''")) {
-			//System.out.println(str);
 			rez = next.replace("''", "quotes");
-			//System.out.println(rez);
 		}
 		return rez;
 	}

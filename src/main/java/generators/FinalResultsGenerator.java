@@ -13,15 +13,21 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import utils.GeneralUtils;
+
+/**
+ * compute metrics for performance validation
+ * 
+ * @author Ariana
+ *
+ */
 public class FinalResultsGenerator {
-
-	private static final String FINAL_RESULTS_FILEPATH = "src/main/resources/ResultsStaticSet.xlsx";
-
+	
+	// metrics
 	private static HashMap<Integer, Double> precision = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> recall = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> fscore = new HashMap<Integer, Double>();
@@ -31,7 +37,7 @@ public class FinalResultsGenerator {
 	private static HashMap<Integer, Integer> fp = new HashMap<Integer, Integer>();
 	// false negatives
 	private static HashMap<Integer, Integer> fn = new HashMap<Integer, Integer>();
-
+	// fonts used in xlsx file
 	private static CellStyle boldCell;
 	private static CellStyle lemonCell;
 	private static CellStyle blueCell;
@@ -39,13 +45,14 @@ public class FinalResultsGenerator {
 	public static void main(String[] args) throws IOException {
 		getResultsFromOutFile();
 	}
-
+	
 	private static void getResultsFromOutFile() throws IOException {
-
+		// initialize xlsx file
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
 		Sheet studentsSheet = workbook.createSheet("Metrics");
 		createFonts(workbook);
 		
+		// writes confusion matrix header in xlsx file
 		int rowIndex = 0;
 		Row row = studentsSheet.createRow(rowIndex++);
 		int cellIndex = 0;
@@ -67,12 +74,11 @@ public class FinalResultsGenerator {
 		cell3 = row.createCell(cellIndex++);
 		cell3.setCellValue("problema");
 		cell3.setCellStyle(blueCell);
-
+		
+		// initialize tp, fp, fn metrics
 		tp = populateIntegerMaps(tp);
 		fp = populateIntegerMaps(fp);
 		fn = populateIntegerMaps(fn);
-
-		// fiecare clasa cu HashMap-ul propriu
 		HashMap<Integer, Integer> hmap0 = new HashMap<Integer, Integer>();
 		hmap0 = populateIntegerMaps(hmap0);
 		HashMap<Integer, Integer> hmap1 = new HashMap<Integer, Integer>();
@@ -82,18 +88,20 @@ public class FinalResultsGenerator {
 		HashMap<Integer, Integer> hmap3 = new HashMap<Integer, Integer>();
 		hmap3 = populateIntegerMaps(hmap3);
 
-		// matricea de confuzie
+		// initialize confusion matrix
 		HashMap<Integer, HashMap<Integer, Integer>> confMatrix = new HashMap<Integer, HashMap<Integer, Integer>>();
 		confMatrix.put(0, hmap0);
 		confMatrix.put(1, hmap1);
 		confMatrix.put(2, hmap2);
 		confMatrix.put(3, hmap3);
-
+		
+		// read test file and out file
 		BufferedReader brTest = new BufferedReader(new FileReader(
-				utils.GeneralUtils.TEST_FEATURES_FILTERED));
+				utils.GeneralUtils.LIBLNR_TEST));
 		BufferedReader brOut = new BufferedReader(new FileReader(
 				utils.GeneralUtils.LIBLNR_OUT));
-
+		
+		// read from files and compare results
 		String currentLineTest;
 		String currentLineOut;
 		// creeare marice de confuzie
@@ -103,24 +111,22 @@ public class FinalResultsGenerator {
 			String[] tokensOut = currentLineOut.split("\\s");
 			Integer valueTest = Integer.parseInt(tokensTest[0]);
 			Integer valueOut = Integer.parseInt(tokensOut[0]);
-
 			Integer currValue = confMatrix.get(valueTest).get(valueOut);
 			currValue++;
 			confMatrix.get(valueTest).put(valueOut, currValue);
-			// System.out.println(valueTest+ " "+valueOut);
 		}
 		brTest.close();
 		brOut.close();
 
-		// AFISARE CONFUSION MATRIX
-		// coloanele matricei
+		// write CONFUSION MATRIX
+		// columns
 		System.out.print("*" + "\t");
 		for (int i = 0; i <= 3; i++) {
 			System.out.print(i + "\t");
 		}
 		System.out.println();
 
-		// randurile matricei
+		// rows
 		for (Integer key : confMatrix.keySet()) {
 			row = studentsSheet.createRow(rowIndex++);
 			System.out.print(key + "\t");
@@ -139,7 +145,7 @@ public class FinalResultsGenerator {
 			System.out.println();
 		}
 
-		// CALCUL Precision, Recall, F-score
+		// compute Precision, Recall, F-score
 		for (Integer key : tp.keySet()) {
 			tp.put(key, confMatrix.get(key).get(key));
 		}
@@ -164,7 +170,7 @@ public class FinalResultsGenerator {
 			fn.put(key, sumRow);
 		}
 
-		// Afisare TP, FP, FN pentru fiecare clasa
+		// writes metrics
 		precision = populateDoubleMaps(precision);
 		recall = populateDoubleMaps(recall);
 		fscore = populateDoubleMaps(fscore);
@@ -220,11 +226,11 @@ public class FinalResultsGenerator {
 		rowIndex = createCategoryXLSXArea("NONE", 0, rowIndexAux, studentsSheet);
 
 		try {
-			FileOutputStream fos = new FileOutputStream(FINAL_RESULTS_FILEPATH);
+			FileOutputStream fos = new FileOutputStream(GeneralUtils.FINAL_RESULTS_FILEPATH);
 			workbook.write(fos);
 			fos.close();
 
-			File file = new File(FINAL_RESULTS_FILEPATH);
+			File file = new File(GeneralUtils.FINAL_RESULTS_FILEPATH);
 			if (!Desktop.isDesktopSupported()) {
 				System.out.println("Desktop is not supported");
 			}
@@ -242,7 +248,16 @@ public class FinalResultsGenerator {
 		}
 
 	}
-
+	
+	/**
+	 * writes metrics and their values in the xlsx file
+	 * 
+	 * @param catName [None, Treatment, Test, Problem]
+	 * @param index	is the category index [0, 1, 2, 3]
+	 * @param rowIndex is the row index in xlsx file
+	 * @param studentsSheet is the xlsx file
+	 * @return
+	 */
 	private static int createCategoryXLSXArea(String catName, int index,
 			int rowIndex, Sheet studentsSheet) {
 		Row row = studentsSheet.createRow(rowIndex++);
@@ -277,7 +292,13 @@ public class FinalResultsGenerator {
 		studentsSheet.createRow(rowIndex++);
 		return rowIndex;
 	}
-
+	
+	/**
+	 * initialize hash map with 0 for every category index
+	 * 
+	 * @param hmap
+	 * @return
+	 */
 	private static HashMap<Integer, Integer> populateIntegerMaps(
 			HashMap<Integer, Integer> hmap) {
 		hmap.put(0, 0);
@@ -286,7 +307,13 @@ public class FinalResultsGenerator {
 		hmap.put(3, 0);
 		return hmap;
 	}
-
+	
+	/**
+	 * initialize hash map with 0.0 for every category index
+	 * 
+	 * @param hmap
+	 * @return
+	 */
 	private static HashMap<Integer, Double> populateDoubleMaps(
 			HashMap<Integer, Double> hmap) {
 		hmap.put(0, 0.0);
@@ -295,7 +322,13 @@ public class FinalResultsGenerator {
 		hmap.put(3, 0.0);
 		return hmap;
 	}
-
+	
+	/**
+	 * get the category name by index
+	 * 
+	 * @param key
+	 * @return
+	 */
 	private static String getCategoryName(int key) {
 		String category = "";
 		switch (key) {
@@ -317,7 +350,12 @@ public class FinalResultsGenerator {
 
 		return category;
 	}
-
+	
+	/**
+	 * create fonts used in xlsx file
+	 * 
+	 * @param workbook
+	 */
 	private static void createFonts(SXSSFWorkbook workbook) {
 		lemonCell = workbook.createCellStyle();
 		lemonCell.setFillForegroundColor(HSSFColor.BRIGHT_GREEN.index);

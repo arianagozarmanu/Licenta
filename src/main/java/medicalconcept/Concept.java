@@ -1,5 +1,10 @@
 package medicalconcept;
 
+/**
+ * Model class for concepts extracted from adnotated files
+ * @author Ariana
+ *
+ */
 public class Concept {
 
 	private String name;

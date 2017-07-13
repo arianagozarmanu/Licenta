@@ -13,6 +13,12 @@ import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instances;
 
+/**
+ * ARFF file generator from general file computed in {@link /medicalconcept/src/main/java/medicalconcept/Main.java}
+ * {warning} use weka library functions
+ * @author Ariana
+ *
+ */
 public class ArffFileGenerator {
 
 	public static void main(String[] args) throws Exception {
@@ -21,8 +27,6 @@ public class ArffFileGenerator {
 		ArrayList<String> attValsCat;
 		Instances data;
 		double[] vals;
-		
-		//nu punem si numele conceptului, nu? Numai trasaturile calculate
 		
 		//1. set up Attributes
 		atts = new ArrayList<Attribute>();
@@ -69,7 +73,7 @@ public class ArffFileGenerator {
 		//numeric
 		atts.add(new Attribute("NrDefInWordNet"));
 		atts.add(new Attribute("TermFrequency"));
-		//nominal	-- fiecare lemma unica e un atribut nominal
+		//nominal	
 		List<String> lemmaFeature = GeneralUtils.getLemmaFromFile();
 		for(String lemma : lemmaFeature) {
 			atts.add(new Attribute(lemma, attValsBool));
@@ -93,11 +97,8 @@ public class ArffFileGenerator {
 			if(count > 0) {
 				String[] instances = currentLine.split("\\s");
 				System.out.println("Nr. of instances:"+instances.length);
-				//System.out.println("count="+count);
-				//System.out.println("line="+currentLine);
 				vals = new double[data.numAttributes()];
 				for(int j=0 ; j<instances.length; j++) {
-					//System.out.println(instances[j]);
 					if(j == 0) {
 						System.out.println("Integer"+instances[j]);
 						vals[j] = Integer.parseInt(instances[j]);
@@ -123,17 +124,13 @@ public class ArffFileGenerator {
 				}
 				// add
 				data.add(new DenseInstance(1.0, vals));
-				//System.out.println(data);	//cand nu mai e none, ceva se intampla nu stiu ce 
 			}
-			//System.out.println("count="+count);
 			count++;
 		}
 		br.close();
-//		System.out.println("Am iesit din DenseInstance");
 		FileWriter fw = new FileWriter(GeneralUtils.ARFF_FILE, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
-//		System.out.println("Am declarat fisierul");
 		out.println(data);
 		out.close();
 		

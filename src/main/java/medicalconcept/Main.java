@@ -11,26 +11,33 @@ import org.clulab.processors.*;
 import org.clulab.processors.corenlp.CoreNLPProcessor;
 
 import utils.GeneralUtils;
-import features.ContextualFeatures;
-import features.SintacticFeatures;
-import features.WordLevelFeatures;
+import features.UniWordConceptContextualFeatures;
+import features.UniWordConceptSintacticFeatures;
+import features.UniWordConceptLevelFeatures;
+import generators.MultiWordConceptsGeneratorWithNGramTechnique;
 
+/**
+ * Main class which generates a general file filled with features vectors 
+ * of every concept identified in unstructured docs
+ * {warning} Run first {@link /medicalconcept/src/main/java/generators/HeaderFileGenerator.java}
+ * @author Ariana
+ *
+ */
 public class Main {
 	
 	public static void main(String[] args) throws IOException, JWNLException {
 		
 		Processor proc = new CoreNLPProcessor(true, true, 0, 100);
 		
-		WordLevelFeatures wlf = new WordLevelFeatures();
-		SintacticFeatures sf = new SintacticFeatures();
-		ContextualFeatures cf = new ContextualFeatures();
+		UniWordConceptLevelFeatures wlf = new UniWordConceptLevelFeatures();
+		UniWordConceptSintacticFeatures sf = new UniWordConceptSintacticFeatures();
+		UniWordConceptContextualFeatures cf = new UniWordConceptContextualFeatures();
 		
-		NGramFeaturesCalculator ngrams = new NGramFeaturesCalculator();
+		MultiWordConceptsGeneratorWithNGramTechnique ngrams = new MultiWordConceptsGeneratorWithNGramTechnique();
 		
-		//preluare LEMMA generate pentru toate documentele existente
+		// read lemma features from file
 		List<String> lemmaFeature = GeneralUtils.getLemmaFromFile();
 		
-		//deschidere fisier pentru scriere trasaturi
 		FileWriter fw = new FileWriter(GeneralUtils.FEATURES_FILE, true);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
@@ -38,57 +45,50 @@ public class Main {
 		String currentLine;
 		String features;
 		
-		//cod pentru citirea tuturor fisierelor si calcularea trasaturilor pentru cuvinte si ngrame
+		// identifies concepts with n-gram and compute features vector
 		File folderTextFiles = new File(GeneralUtils.RAW_DOCS_PATH);
 		for (final File fileEntry : folderTextFiles.listFiles()) {
             System.out.println(fileEntry.getName().toString());
-			//creare buffer reader pentru fisierele text
             FileReader fr = new FileReader(GeneralUtils.RAW_DOCS_PATH + "/" + fileEntry.getName().toString());
             BufferedReader br = new BufferedReader(fr);
             
-            //creare lista de obiecte din fisierele .con pentru preluare categorie
+            // read adnotated objects
             List<Concept> conObjects = new ArrayList<Concept>();
             conObjects = GeneralUtils.takeConObjectsIntoList(fileEntry);
             
-            //creare doc cu fisierul intreg pentru TF
             Scanner scanner = new Scanner(new File(GeneralUtils.RAW_DOCS_PATH + "/" + fileEntry.getName().toString()));
             String text = scanner.useDelimiter("\\A").next();
             Document totalDOC = proc.annotate(text, false);
             scanner.close();
             
             while ((currentLine = br.readLine()) != null) {
-            	Document doc = proc.annotate(currentLine, false); //unele linii din fisier au cate 2 sau mai multe propozitii
+            	Document doc = proc.annotate(currentLine, false); 
             	for (Sentence sentence : doc.sentences()) {	
             		String[] tokens = GeneralUtils.mkString(sentence.words(), " ").split("\\s");
             		String[] pos = sentence.tags().get();
             		String[] lemmas = sentence.lemmas().get();
             		
-            		//preluare trasaturi pentru n-grame
+            		// compute multiword concepts features
             		List<String> ngramFeatures = ngrams.generateNGramFeatures(sentence, totalDOC, conObjects, lemmaFeature);
-            		//scriere in fisier trasaturi ngrame
             		for(String feature : ngramFeatures) {
             			out.println(feature);
             		}
             		
-            		//preluare trasaturi pentru fiecare cuvant
+            		// compute uniword concepts features
             		for (int x=0; x<tokens.length; x++) {
             			if(tokenToTake(tokens[x], pos[x])) {
-            				//pentru ca sentence.words() face ca ( si ) sa fie LRB si RRB
             				String word = GeneralUtils.getWordWithLRBRRB(tokens, x);
             				String lemma = GeneralUtils.getWordWithLRBRRB(lemmas, x);
             				if(word.contains("(")){	
             					x = x+3;
             				} 
 	            			features = "";
-	            			//adaugare features word level, contextuale si sintactice
 		            		features += wlf.getWordLevelFeatures(x, word, sentence);
 		            		features += sf.getSintacticFeatures(x, sentence);
 		            		features += cf.getContextualFeatures(x, word, sentence, totalDOC);
 		            		
-		            		//adaugare features lemma cuvintelor
 		            		features = GeneralUtils.setLemmaFeature(lemmaFeature, features, lemma);
 		            		
-		            		//adaugare categorie
 		            		features = GeneralUtils.setCategory(conObjects, features, word);
 		            		
 		            		out.println(features);
@@ -104,9 +104,15 @@ public class Main {
 
 	}
 	
+	/**
+	 * concept identification rules
+	 * 
+	 * @param token
+	 * @param pos
+	 * @return
+	 */
 	private static Boolean tokenToTake(String token, String pos) {
 		
-		//verificare daca tokenul e caracter special sau numar
 		Boolean notOK = true;
 		for (int i = 0; i < token.length() && notOK; i++) {
 			if(!GeneralUtils.SPECIAL_CHARS.contains("" + token.charAt(i))) {
@@ -123,11 +129,9 @@ public class Main {
 		}
 		if(notOK) return false;
 		
-		//verificare daca e format dintr-o singura litera
 		if(token.length() == 1)
 			return false;
 		
-		//verificare daca POS e valabil (not CC,CD,DT,EX,IN,-LRB-,LS,PDT,PP,PRPR$,PRP,PRP$,TO,UH,WDT,WP,WRB)
 		if (pos.toUpperCase().equals("CC") || pos.toUpperCase().equals("CD")
 				|| pos.toUpperCase().equals("DT")
 				|| pos.toUpperCase().equals("EX")

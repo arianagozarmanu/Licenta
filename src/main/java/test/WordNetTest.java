@@ -13,6 +13,11 @@ import net.didion.jwnl.data.Synset;
 import net.didion.jwnl.data.Word;
 import net.didion.jwnl.dictionary.Dictionary;
 
+/**
+ * WordNet library functionalities test
+ * @author Ariana
+ *
+ */
 public class WordNetTest {
 	
 	public static void main(String[] args) throws FileNotFoundException, JWNLException {
@@ -23,7 +28,7 @@ public class WordNetTest {
 		JWNL.initialize(new FileInputStream(
 				"E:/An4/Licenta/workspace/properties.xml"));
 		Dictionary dictionary = Dictionary.getInstance();
-		IndexWord word = dictionary.lookupIndexWord(POS.NOUN, "Coronary Artery Bypass Graft"); //n-au nici on in and the.. dar nici "a amiodarone gtt"
+		IndexWord word = dictionary.lookupIndexWord(POS.NOUN, "Coronary Artery Bypass Graft"); 
 		System.out
 				.println("Senses of the word 'Coronary Artery Bypass Graft':");
 		if (word!=null) {

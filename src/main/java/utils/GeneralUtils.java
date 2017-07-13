@@ -17,58 +17,83 @@ import medicalconcept.Concept;
 import org.clulab.processors.Document;
 import org.clulab.processors.Sentence;
 
+/**
+ * path for Files and general methods
+ * @author Ariana
+ *
+ */
 public final class GeneralUtils {
-
+	// dummy constants
 	public static final String DUMMY_STRING1 = "Alal bala Port3 IeSi gaD5a artera aorta . "
 			+ "Mar-3fs ja & sd-pf sfa1 's assg . H/D/F 34 , g ad . No(2) >30% of marg . "
 			+ "<< asd efd 4omg . In lov3 with 3 of mg and 4 mg artera aorta. The thoracic, artera aorta is broken x3 mg.";
-	
 	public static final String DUMMY_STRING2 = "The thoracic, artera aorta is broken x3 mg.";
+	// it should be generated first
+	public static final String DUMMY_FILE = "src/main/resources/TrainAndTestFiles/features170.txt"; 
+	// it should be generated first
+	public static final String DUMMY_FILE_TRAIN = "src/main/resources/TrainAndTestFiles/train256.txt"; 
 	
-	public static final String RAW_DOCS_PATH = "E:/An4/Licenta/DATASET/ALL_TXT_FILES"; //DUMMY | ALL_TXT_FILES
-	public static final String RAW_CON_DOCS_PATH = "E:/An4/Licenta/DATASET/ALL_CON_FILES"; //DUMMY_CON | ALL_CON_FILES
-	public static final String LEMMA_OUT_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/lemma.txt"; //OTHERS_analiza | Lemma
-	public static final String ARFF_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/medicalconcept10.arff"; //OTHERS_analiza | Lemma
-	public static final String REJECTED_WORDS = "E:/An4/Licenta/DATASET/OTHERS_analiza/rejected-lemma.txt"; //OTHERS_analiza | Lemma
-	public static final String FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/DummyTest2.txt"; //OTHERS_analiza | Lemma
-	public static final String CON_PROCESSED_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/con-procesat.txt"; //OTHERS_analiza | Lemma
-	public static final String LIBLNR_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170LemmaPosChnkFilterNrWdsNoWN.txt"; //OTHERS_analiza | Lemma | GATA
-	public static final String LIBLNR_TEST = "E:/An4/Licenta/DATASET/GATA/testSet256TOATEwCHNKSv2.txt"; //OTHERS_analiza | Lemma //testSet256TOATEwCHNKSv2.txt
-	public static final String LIBLNR_OUT = "E:/An4/Licenta/DATASET/GATA/OUT/outAnaliza2";
-	public static final String POS_FILE = "E:/An4/Licenta/DATASET/GATA/POS.txt"; 
-	public static final String CHUNKS_FILE = "E:/An4/Licenta/DATASET/GATA/CHUNKS.txt"; 
-	public static final String LIBLNR_NO_LEMMA_TRAIN = "E:/An4/Licenta/DATASET/GATA/trainSet170faraLemma.txt";
-	public static final String LIBLNR_NO_LEMMA_TEST = "E:/An4/Licenta/DATASET/GATA/testSet258faraLemma.txt"; 
-	public static final String POS_USED_FOR_MEDICAL_CONCEPT = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUsedForMedicalConcepts.txt";
-	public static final String POS_USED_FOR_NONMEDICAL_CONCEPT = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUsedForNonMedicalConcepts.txt";
-	public static final String CHUNKS_USED_FOR_MED_CONC = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUsedForMedicalConcepts.txt";
-	public static final String CHUNKS_USED_FOR_NONMED_CONC = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUsedForNonMedicalConcepts.txt";
-	public static final String DUMMY_FILE = "E:/An4/Licenta/DATASET/GATA/features170.txt"; //OTHERS_analiza | Lemma
-	public static final String DUMMY_FILE_TRAIN = "E:/An4/Licenta/DATASET/GATA/train97cuLemmaCUpos.txt"; //OTHERS_analiza | Lemma
-	public static final String POS2_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/2POSUnusedForMedicalConcepts.txt";
-	public static final String POS3_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/3POSUnusedForMedicalConcepts.txt";
-	public static final String POS4_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/4POSUnusedForMedicalConcepts.txt";
-	public static final String POS5_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/5POSUnusedForMedicalConcepts.txt";
-	public static final String CHNK5_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/5ChunksUnusedForMedicalConcepts.txt";
-	public static final String CHNK1_UNUSED_MED_CONCEPTS = "E:/An4/Licenta/DATASET/GATA/AnalizaDate/1ChunksUnusedForMedicalConcepts.txt";
-	public static final String SHORTER_FEATURES_FILE = "E:/An4/Licenta/DATASET/GATA/features170faraPOS.txt"; //OTHERS_analiza | Lemma
-	public static final String LIBLNR_OUT_WITH_NR_OF_WORDS = "E:/An4/Licenta/DATASET/GATA/trainSet170cuNrOfWords.txt"; //OTHERS_analiza | Lemma | GATA
-	public static final String CSV_FROM_LIBLINEAR = "E:/An4/Licenta/DATASET/GATA/forFeatureSelection.txt";
-	public static final String CSV_WITHOUT_LEMMA = "E:/An4/Licenta/DATASET/GATA/forFeatureSelectionNoLemma.txt";
-	public static final String IRIS_DATA = "E:/An4/Licenta/UCI-small/iris/iris.data";
-	public static final String FEATURE_SCORING = "E:/An4/Licenta/DATASET/GATA/featureScoring.txt";
-	public static final String FEATURE_RANKING = "E:/An4/Licenta/DATASET/GATA/featureRanking.txt";
-	public static final String FETURES_FILTERED = "E:/An4/Licenta/DATASET/GATA/featuresNotToTake.txt";
-	public static final String FETURES_FILTERED_TO_TAKE = "E:/An4/Licenta/DATASET/GATA/featuresToTake.txt";
-	public static final String TRAIN_FEATURES_FILTERED = "E:/An4/Licenta/DATASET/GATA/train170FeatureSelection.txt";
-	public static final String TEST_FEATURES_FILTERED = "E:/An4/Licenta/DATASET/GATA/test256FeatureSelection.txt";
-	
+	public static final String RAW_DOCS_PATH = "src/main/resources/ALL_TXT_FILES"; 
+	public static final String RAW_CON_DOCS_PATH = "src/main/resources/ALL_CON_FILES"; 
+	public static final String LEMMA_OUT_FILE = "src/main/resources/AnalysisFiles/lemma.txt"; 
+	// it should be generated first
+	public static final String ARFF_FILE = "src/main/resources/TrainAndTestFiles/medicalconcept10.arff"; 
+	// it should be generated first
+	public static final String REJECTED_WORDS = "src/main/resources/AnalysisFiles/rejected-lemma.txt";
+	// general file computed in Main class. Its dimension is about GB. It should be generated first
+	public static final String FEATURES_FILE = "src/main/resources/TrainAndTestFiles/generalFile.txt"; 
+	// it should be generated first
+	public static final String CON_PROCESSED_FILE = "src/main/resources/AnalysisFiles/con-procesat.txt"; 
+	public static final String LIBLNR_TRAIN = "src/main/resources/TrainAndTestFiles/trainSet170LemmaPosChnkFilterNrWdsNoWN.txt"; 
+	public static final String LIBLNR_TEST = "src/main/resources/TrainAndTestFiles/testSet256TOATEwCHNKSv2.txt"; 
+	public static final String LIBLNR_OUT = "src/main/resources/TrainAndTestFiles/OUT/outDefault";
+	public static final String POS_FILE = "src/main/resources/AnalysisFiles/POS.txt"; 
+	public static final String CHUNKS_FILE = "src/main/resources/AnalysisFiles/CHUNKS.txt"; 
+	// it should be generated first
+	public static final String LIBLNR_NO_LEMMA_TRAIN = "src/main/resources/TrainAndTestFiles/trainSet170faraLemma.txt";
+	// it should be generated first
+	public static final String LIBLNR_NO_LEMMA_TEST = "src/main/resources/TrainAndTestFiles/testSet258faraLemma.txt"; 
+	public static final String POS_USED_FOR_MEDICAL_CONCEPT = "src/main/resources/AnalysisFiles/4POSUsedForMedicalConcepts.txt";
+	public static final String POS_USED_FOR_NONMEDICAL_CONCEPT = "src/main/resources/AnalysisFiles/4POSUsedForNonMedicalConcepts.txt";
+	public static final String CHUNKS_USED_FOR_MED_CONC = "src/main/resources/AnalysisFiles/1ChunksUsedForMedicalConcepts.txt";
+	public static final String CHUNKS_USED_FOR_NONMED_CONC = "src/main/resources/AnalysisFiles/1ChunksUsedForNonMedicalConcepts.txt";
+	public static final String POS2_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/2POSUnusedForMedicalConcepts.txt";
+	public static final String POS3_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/3POSUnusedForMedicalConcepts.txt";
+	public static final String POS4_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/4POSUnusedForMedicalConcepts.txt";
+	public static final String POS5_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/5POSUnusedForMedicalConcepts.txt";
+	public static final String CHNK5_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/5ChunksUnusedForMedicalConcepts.txt";
+	public static final String CHNK1_UNUSED_MED_CONCEPTS = "src/main/resources/AnalysisFiles/1ChunksUnusedForMedicalConcepts.txt";
+	// it should be generated first
+	public static final String SHORTER_FEATURES_FILE = "src/main/resources/TrainAndTestFiles/features170noPOS.txt"; 
+	// it should be generated first
+	public static final String LIBLNR_OUT_WITH_NR_OF_WORDS = "src/main/resources/TrainAndTestFiles/trainSet170withNrOfWords.txt"; 
+	// it should be generated first
+	public static final String CSV_FROM_LIBLINEAR = "src/main/resources/AnalysisFiles/forFeatureSelection.txt";
+	// it should be generated first
+	public static final String CSV_WITHOUT_LEMMA = "src/main/resources/AnalysisFiles/forFeatureSelectionNoLemma.txt";
+	// it should be downloaded from the internet
+	public static final String IRIS_DATA = "src/main/resources/AnalysisFiles/iris.data";
+	public static final String FEATURE_SCORING = "src/main/resources/AnalysisFiles/featureScoring.txt";
+	// it should be generated first
+	public static final String FEATURE_RANKING = "src/main/resources/AnalysisFiles/featureRanking.txt";
+	public static final String FETURES_FILTERED = "src/main/resources/AnalysisFiles/featuresNotToTake.txt";
+	public static final String FETURES_FILTERED_TO_TAKE = "src/main/resources/AnalysisFiles/featuresToTake.txt";
+	// it should be generated first
+	public static final String TRAIN_FEATURES_FILTERED = "src/main/resources/TrainAndTestFiles/train170FeatureSelection.txt";
+	// it should be generated first
+	public static final String TEST_FEATURES_FILTERED = "src/main/resources/TrainAndTestFiles/test256FeatureSelection.txt";
+	// Histogram of concept length 
+	public static final String OUT_FILE = "src/main/resources/AnalysisFiles/ConceptLengthHistogram.txt";
+	public static final String FINAL_RESULTS_FILEPATH = "src/main/resources/Results/FinalResults.xlsx";
+	// nr of features for our training file
 	public static final int NR_OF_INSTANCES_IN_ROW = 4763;
+	// nr of static features
 	public static final int NR_OF_INSTANCES_WITHOUT_LEMMA = 359;
+	
 	public static final String SPECIAL_CHARS = "!#$%&'*+,-./:;<=>?@[]^_`{|}~";
 	public static final String NUMBERS = "0123456789";
 	
-	public static final String FEATURE_HEADER = /*"Concept" + "\t" + */"Length" + "\t" + "Begin-UpperCase" + "\t" + "All-UpperCase" + "\t" 
+	public static final String STATIC_FEATURES_HEADER = "Nr. of words" + "\t" + "Length" + "\t" + "Begin-UpperCase" + "\t" + "All-UpperCase" + "\t" 
 			+ "MixedCase" + "\t" + "Ampersand" + "\t" + "Comma" + "\t" + "Period" + "\t" + "GreaterSign" + "\t" + "LessSign" + "\t" 
 			+ "Minus" + "\t" + "Paranthesis" + "\t" + "QuoteMark" + "\t" + "Percent" + "\t" + "Slash" + "\t" + "Digits" + "\t" 
 			+ "SpCharBef" + "\t" + "SpCharBBef" + "\t" +"SpCharBBBef" + "\t" + "SpCharAft" + "\t" + "SpCharAAft" + "\t" + "SpCharAAAft" + "\t" 
@@ -137,11 +162,8 @@ public final class GeneralUtils {
 	
 	public static String getWordWithLRBRRB(String[] tokens, int x) {
 		String word = null;
-		//if(tokens.length - x > 3) //verificare cele 3 cuvinte urmatoare
-			//System.out.println(tokens[x]+"|"+tokens[x+1]+"|"+tokens[x+2]+"|"+tokens[x+3]+"|");
 		if(tokens.length - x > 3 && tokens[x+1].toLowerCase().equals("-lrb-") && tokens[x+3].toLowerCase().equals("-rrb-")) {
 			word = tokens[x] + "(" + tokens[x+2] + ")";
-			//System.out.println(word);
 		}
 		else word = tokens[x];
 		return word;		
@@ -211,7 +233,6 @@ public final class GeneralUtils {
 		PrintWriter out = new PrintWriter(bw);
 		
 		FileReader frCON = new FileReader(GeneralUtils.RAW_CON_DOCS_PATH + "/" + fileEntry.getName().toString().substring(0,fileEntry.getName().toString().length()-3) + "con");
-        //System.out.println("Citire din " + fileEntry.getName().toString().substring(0,fileEntry.getName().toString().length()-3) + "con");
 		BufferedReader br = new BufferedReader(frCON);
 		List<Concept> result = new ArrayList<Concept>();
 		String currentLine;
@@ -222,7 +243,6 @@ public final class GeneralUtils {
 			String category = null;
 			for (int x=0; x<tokens.length; x++) {
 				if(x==1) {
-					//scot punctul de la final daca vreun concept are
 					if(tokens[x].length()>1 && tokens[x].substring(tokens[x].length()-1, tokens[x].length()).equals(".") ) {
 						concept = tokens[x].substring(0,tokens[x].length()-1); 
 					} else {
@@ -230,7 +250,6 @@ public final class GeneralUtils {
 					}
 				}
 				if(x==2){
-					//System.out.println(tokens[x].substring(1,tokens[x].length()));
 					line = Integer.parseInt(tokens[x].substring(1,tokens[x].length()));
 				}
 				if(x==5)	category = tokens[x]; 
@@ -240,7 +259,6 @@ public final class GeneralUtils {
 			conceptObj.setLine(line);
 			conceptObj.setCategory(category);
 			result.add(conceptObj);
-			//System.out.println(concept + "|" + line + "|" + category);
 		}
 		
 		for(Concept con: result) {

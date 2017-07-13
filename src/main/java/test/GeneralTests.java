@@ -3,7 +3,6 @@ package test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,13 +17,16 @@ import org.clulab.processors.corenlp.CoreNLPProcessor;
 
 import utils.GeneralUtils;
 
+/**
+ * General Test 
+ * @author Ariana
+ *
+ */
 public class GeneralTests {
 
 	public static void main(String[] args) throws IOException {
-		// String RAW_DOCS_PATH =
-		// Util.RAW_DOCS_PATH;//"E:/An4/Licenta/sample_input_data";
-		// readFromFile(RAW_DOCS_PATH);
-		// readFileWithClulab(RAW_DOCS_PATH);
+		// readFromFile(GeneralUtils.RAW_DOCS_PATH);
+		// readFileWithClulab(GeneralUtils.RAW_DOCS_PATH);
 		// takeConObjectsInList();
 		// testFeaturesFile();
 		// testPOSUsedForConcepts();
@@ -35,7 +37,7 @@ public class GeneralTests {
 		// testNChunksUsedForConcepts(5);
 		// testCunksUsedForConcepts();
 		// testCunksUsedForNonConcepts();
-		//getNrOfTokensSplitBySpaceOnRow(GeneralUtils.CSV_WITHOUT_LEMMA, ",");
+		// getNrOfTokensSplitBySpaceOnRow(GeneralUtils.CSV_WITHOUT_LEMMA, ",");
 		getNumberOfConceptfFromFiles(GeneralUtils.RAW_CON_DOCS_PATH);
 	}
 
@@ -44,15 +46,15 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_MED_CONC, false);
+		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_MED_CONC,
+				false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
-		// preluare Chunks in HashMap
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		FileReader frchks = new FileReader(GeneralUtils.CHUNKS_FILE);
 		BufferedReader brchks = new BufferedReader(frchks);
-		String line; // read line-by-line
+		String line;
 		int count0 = 1;
 		while ((line = brchks.readLine()) != null && count0 <= 22) {
 			hmap.put(line, 0);
@@ -60,15 +62,12 @@ public class GeneralTests {
 		}
 		hmap.put("O", 0);
 		brchks.close();
-		// System.out.println(hmap);
-		// System.out.println(hmap.size());
 
 		int count = 0;
 		while ((currentLine = br.readLine()) != null) {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] chnkOfTokens = tokens[22].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (!tokens[tokens.length - 1].equals("none")
 						&& !chnkOfTokens[0].equals("''")
 						&& !chnkOfTokens[0].equals(":")) {
@@ -85,7 +84,7 @@ public class GeneralTests {
 			out.println(key + ":" + hmap.get(key));
 		}
 		out.close();
-		System.out.println("Analiza chunks terminata");
+		System.out.println("Analysis finished");
 	}
 
 	public static void testCunksUsedForNonConcepts() throws IOException {
@@ -93,11 +92,11 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_NONMED_CONC, false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.CHUNKS_USED_FOR_NONMED_CONC, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
-		// preluare POS in HashMap
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		FileReader frchks = new FileReader(GeneralUtils.CHUNKS_FILE);
 		BufferedReader brchks = new BufferedReader(frchks);
@@ -109,8 +108,6 @@ public class GeneralTests {
 		}
 		hmap.put("O", 0);
 		brchks.close();
-		// System.out.println(hmap);
-		// System.out.println(hmap.size());
 
 		int count = 0;
 		while ((currentLine = br.readLine()) != null) {
@@ -134,7 +131,7 @@ public class GeneralTests {
 			out.println(key + ":" + hmap.get(key));
 		}
 		out.close();
-		System.out.println("Analiza chunks terminata");
+		System.out.println("Analysis finished.");
 	}
 
 	public static void testNChunksUsedForNonConcepts(int n) throws IOException {
@@ -142,7 +139,8 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_NONMED_CONC, false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.CHUNKS_USED_FOR_NONMED_CONC, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
@@ -153,7 +151,6 @@ public class GeneralTests {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] chnkOfTokens = tokens[22].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (chnkOfTokens.length >= n
 						&& tokens[tokens.length - 1].equals("none")
 						&& !chnkOfTokens[0].equals("''")
@@ -186,7 +183,8 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_MED_CONC, false);
+		FileWriter fw = new FileWriter(GeneralUtils.CHUNKS_USED_FOR_MED_CONC,
+				false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
@@ -197,7 +195,6 @@ public class GeneralTests {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] chnkOfTokens = tokens[22].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (chnkOfTokens.length >= n
 						&& !tokens[tokens.length - 1].equals("none")
 						&& !chnkOfTokens[0].equals("''")
@@ -230,8 +227,8 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.POS_USED_FOR_NONMEDICAL_CONCEPT,
-				false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.POS_USED_FOR_NONMEDICAL_CONCEPT, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
@@ -242,7 +239,6 @@ public class GeneralTests {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] posOfTokens = tokens[21].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (posOfTokens.length >= n
 						&& tokens[tokens.length - 1].equals("none")
 						&& !posOfTokens[0].equals("''")
@@ -275,7 +271,8 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.POS_USED_FOR_MEDICAL_CONCEPT, false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.POS_USED_FOR_MEDICAL_CONCEPT, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
@@ -286,7 +283,6 @@ public class GeneralTests {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] posOfTokens = tokens[21].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (posOfTokens.length >= n
 						&& !tokens[tokens.length - 1].equals("none")
 						&& !posOfTokens[0].equals("''")
@@ -319,11 +315,11 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.POS_USED_FOR_MEDICAL_CONCEPT, false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.POS_USED_FOR_MEDICAL_CONCEPT, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
-		// preluare POS in HashMap
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		FileReader frPOS = new FileReader(GeneralUtils.POS_FILE);
 		BufferedReader brPOS = new BufferedReader(frPOS);
@@ -332,8 +328,6 @@ public class GeneralTests {
 			hmap.put(line, 0);
 		}
 		brPOS.close();
-		// System.out.println(hmap);
-		// System.out.println(hmap.size());
 
 		int count = 0;
 		while ((currentLine = br.readLine()) != null) {
@@ -357,7 +351,7 @@ public class GeneralTests {
 			out.println(key + ":" + hmap.get(key));
 		}
 		out.close();
-		System.out.println("Analiza POS terminata");
+		System.out.println("POS Analysis End");
 	}
 
 	public static void testPOSUsedForNonConcepts() throws IOException {
@@ -365,12 +359,11 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 		String currentLine; // read line-by-line
 
-		FileWriter fw = new FileWriter(GeneralUtils.POS_USED_FOR_NONMEDICAL_CONCEPT,
-				false);
+		FileWriter fw = new FileWriter(
+				GeneralUtils.POS_USED_FOR_NONMEDICAL_CONCEPT, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 
-		// preluare POS in HashMap
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		FileReader frPOS = new FileReader(GeneralUtils.POS_FILE);
 		BufferedReader brPOS = new BufferedReader(frPOS);
@@ -379,15 +372,12 @@ public class GeneralTests {
 			hmap.put(line, 0);
 		}
 		brPOS.close();
-		// System.out.println(hmap);
-		// System.out.println(hmap.size());
 
 		int count = 0;
 		while ((currentLine = br.readLine()) != null) {
 			if (count > 0) {
 				String[] tokens = currentLine.split("\\s");
 				String[] posOfTokens = tokens[21].split("_");
-				// System.out.println(posOfTokens[0]);
 				if (tokens[tokens.length - 1].equals("none")
 						&& !posOfTokens[0].equals("''")
 						&& !posOfTokens[0].equals(":")
@@ -405,10 +395,9 @@ public class GeneralTests {
 			out.println(key + ":" + hmap.get(key));
 		}
 		out.close();
-		System.out.println("Analiza POS terminata");
+		System.out.println("POS Analysis end.");
 	}
 
-	// preluare categorie pentru fiecare cuvant din .con files
 	public static void takeConObjectsInList() throws IOException {
 
 		File folderTextFiles = new File(GeneralUtils.RAW_DOCS_PATH);
@@ -461,12 +450,8 @@ public class GeneralTests {
 		BufferedReader br = new BufferedReader(fr);
 
 		String CurrentLine; // read line-by-line
-		// String document = "";
 		while ((CurrentLine = br.readLine()) != null) {
 			System.out.println(CurrentLine);
-			// Nu merge asa
-			// document += CurrentLine + System.lineSeparator();
-			// System.out.println(document);
 		}
 		br.close();
 	}
@@ -504,8 +489,7 @@ public class GeneralTests {
 	}
 
 	/**
-	 * Testul preia fisierul de features si verifica daca numarul elementelor de
-	 * pe fiecare linie este acelasi
+	 * test general file being consistent
 	 * 
 	 * @throws IOException
 	 */
@@ -538,8 +522,8 @@ public class GeneralTests {
 		br.close();
 	}
 
-	public static void getNrOfTokensSplitBySpaceOnRow(String file, String splitter)
-			throws IOException {
+	public static void getNrOfTokensSplitBySpaceOnRow(String file,
+			String splitter) throws IOException {
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String CurrentLine = br.readLine(); // read line-by-line
@@ -547,20 +531,24 @@ public class GeneralTests {
 				+ CurrentLine.split(splitter).length);
 		br.close();
 	}
-	
+
 	/**
 	 * Get the nr. of concepts from .con files 
 	 * There is one concept/line
-	 * @param path to folder (with .con files)
+	 * 
+	 * @param path
+	 *            to folder (with .con files)
 	 * @throws IOException
 	 */
-	public static void getNumberOfConceptfFromFiles(String path) throws IOException {
+	public static void getNumberOfConceptfFromFiles(String path)
+			throws IOException {
 		File folderTextFiles = new File(path);
 		int count = 0;
-		String currentLine;
 		for (final File fileEntry : folderTextFiles.listFiles()) {
-			FileReader fr = new FileReader(path + "/" + fileEntry.getName().toString());
+			FileReader fr = new FileReader(path + "/"
+					+ fileEntry.getName().toString());
 			BufferedReader br = new BufferedReader(fr);
+			String currentLine = "";
 			while ((currentLine = br.readLine()) != null) {
 				count++;
 			}

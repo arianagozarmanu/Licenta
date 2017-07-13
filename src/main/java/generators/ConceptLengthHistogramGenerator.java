@@ -16,20 +16,23 @@ import java.util.Set;
 import utils.GeneralUtils;
 import medicalconcept.Concept;
 
+/**
+ * Concepts lenght analysis
+ * 
+ * @author Ariana
+ *
+ */
 public class ConceptLengthHistogramGenerator {
-	
-	public static final String OUT_FILE = "E:/An4/Licenta/DATASET/OTHERS_analiza/ConceptLengthHistogram.txt";
-	public static final String CON_FILES = "E:/An4/Licenta/DATASET/ALL_CON_FILES";
 	
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) throws IOException {
-		File folderTextFiles = new File(CON_FILES);
+		File folderTextFiles = new File(GeneralUtils.RAW_CON_DOCS_PATH);
 		HashMap<Integer,Integer> hmap = new HashMap<Integer,Integer>();
 		for(int i=1; i<30; i++) {
 			hmap.put(i,0);
 		}
 		
-		FileWriter fw = new FileWriter(OUT_FILE, false);
+		FileWriter fw = new FileWriter(GeneralUtils.OUT_FILE, false);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
@@ -41,7 +44,6 @@ public class ConceptLengthHistogramGenerator {
 			 conObjects = GeneralUtils.takeConObjectsIntoList(fileEntry);
 			 for(Concept concept: conObjects) {
 				 nrOfWords = concept.getName().split("\\s").length;
-				 //System.out.println(nrOfWords + concept.getName());
 				 value = hmap.get(nrOfWords) + 1;
 				 hmap.put(nrOfWords, value);
 			 }

@@ -9,24 +9,28 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Methods for manipulating files
+ * 
+ * @author Ariana
+ *
+ */
 public class UtilFileManipulatorAndGenerator {
 
-	// numarul randului pana unde sa se copieze
 	private final static int LIMIT = 390472;
 
 	public static void main(String[] args) throws IOException {
-		// LIBLNR_TRAIN LIBLNR_TEST
 		// getLemmaOutOfSparseMatrix(GeneralUtils.LIBLNR_TRAIN,
 		// GeneralUtils.LIBLNR_NO_LEMMA_TRAIN);
 		// getLemmaOutOfSparseMatrix(GeneralUtils.LIBLNR_TEST,
 		// GeneralUtils.LIBLNR_NO_LEMMA_TEST);
 		// getElementsFromAFileMinusElementsFromAnother();
 		// getShorterFeatureFileWithoutPOS();
-		 //getFeaturesWithoutLemma();
+		//getFeaturesWithoutLemma();
 		deleteFeaturesSelected(GeneralUtils.LIBLNR_TRAIN, GeneralUtils.TRAIN_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED);
 		// deleteFeaturesUnselected(GeneralUtils.LIBLNR_TEST, GeneralUtils.TEST_FEATURES_FILTERED, GeneralUtils.FETURES_FILTERED_TO_TAKE);
 		// getFirstNFeatureIndex(100, GeneralUtils.FEATURE_SCORING, GeneralUtils.FETURES_FILTERED_TO_TAKE);
-		 //addFeaturesIndexInFileFromStartPoint(GeneralUtils.FETURES_FILTERED, GeneralUtils.NR_OF_INSTANCES_WITHOUT_LEMMA);
+		//addFeaturesIndexInFileFromStartPoint(GeneralUtils.FETURES_FILTERED, GeneralUtils.NR_OF_INSTANCES_WITHOUT_LEMMA);
 	}
 	
 	public static void addFeaturesIndexInFileFromStartPoint(String file, int start) throws IOException {
@@ -54,16 +58,13 @@ public class UtilFileManipulatorAndGenerator {
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
-		//read all feature index
 		ArrayList<Integer> array = new ArrayList<Integer>();
 		while ((cl = br.readLine()) != null) {
 			String[] tokens = cl.split("\\s");
-			//System.out.println(tokens[0]);
 			array.add(Integer.parseInt(tokens[0]));
 		}
 		
 		int size = array.size();
-		//System.out.println(array);
 		if(n < array.size()) {
 			for(int i = 1; i<=n ; i++ ) {
 				out.println(array.get(size - i));
@@ -252,12 +253,10 @@ public class UtilFileManipulatorAndGenerator {
 			for (int i = 1; i < tokens.length; i++) {
 				int j = 0;
 				String number = "";
-				// System.out.println("Caracter="+tokens[i].charAt(j));
 				while (tokens[i].charAt(j) != ':') {
 					number = number + tokens[i].charAt(j);
 					j++;
 				}
-				// System.out.println("Numar="+number);
 				if (Integer.parseInt(number) <= 359) {
 					row = row + tokens[i] + " ";
 				}
@@ -349,7 +348,7 @@ public class UtilFileManipulatorAndGenerator {
 		return hs;
 	}
 
-	private static void getFeaturesWithoutLemma() throws IOException {
+	public static void getFeaturesWithoutLemma() throws IOException {
 		FileReader fr = new FileReader(GeneralUtils.CSV_FROM_LIBLINEAR);
 		BufferedReader br = new BufferedReader(fr);
 		String cl; // read line-by-line
@@ -377,6 +376,6 @@ public class UtilFileManipulatorAndGenerator {
 		br.close();
 		out.close();
 		
-		System.out.println("Manipulare terminata");
+		System.out.println("End.");
 	}
 }
